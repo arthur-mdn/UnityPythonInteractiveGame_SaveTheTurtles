@@ -13,6 +13,7 @@ git clone https://github.com/arthur-mdn/UnityPythonInteractiveGame_SaveTheTurtle
 ## Utilisation
 ### Unity
 Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`** 
+Ouvrez la scène "BallGame" pour démarrer.
 
 ### Python
 #### Lancer le serveur d'écoute
@@ -22,3 +23,6 @@ cd PythonProject
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 Scripts\Activate.ps1
 ```
+
+#### Retour sur Unity
+Une fois l'écoute du serveur python lancée, démarrer la scène avec le bouton play.
