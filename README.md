@@ -19,6 +19,6 @@ Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`**
 Pour lancer l'écoute du serveur python (sur Windows) :
 ```bash
 cd PythonProject
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 Scripts\Activate.ps1
 ```

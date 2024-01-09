@@ -1,5 +1,5 @@
 Pour lancer l'écoute du serveur python (sur Windows) :
 ```bash
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 Scripts\Activate.ps1
 ```
