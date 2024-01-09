@@ -30,7 +30,7 @@ while True:
         if not ret:
             break
     else:
-        frame = cv2.imread('wall.jpg')
+        frame = cv2.imread('Elements/wall.jpg')
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 

@@ -9,9 +9,9 @@ import threading
 is_calibrated = False
 calibration_points = None
 capture_running = False
-model = YOLO("yolov8n-pose.pt")
+model = YOLO("yolo/yolov8n-pose.pt")
 video_source = "webcam"
-video_path = "wall_vid.mp4"
+video_path = "Elements/wall_vid.mp4"
 
 def detect_aruco_markers(image):
     # Paramètres ArUco
