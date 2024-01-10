@@ -13,15 +13,26 @@ git clone https://github.com/arthur-mdn/UnityPythonInteractiveGame_SaveTheTurtle
 ## Utilisation
 ### Unity
 Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`** 
-Ouvrez la scène "BallGame" pour démarrer.
+Ouvrez la scène `BallGame` pour démarrer.
 
 ### Python
-#### Lancer le serveur d'écoute
-Pour lancer l'écoute du serveur python (sur Windows) :
+#### Pour lancer l'écoute du serveur python (sur Windows)
+
+Avec la variable d'environnement python311
 ```bash
-cd PythonProject
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
-Scripts\Activate.ps1
+python311 -m venv saveTurtles 
+```
+Sans la variable d'environnement python311
+```bash
+Z:\chemin\complet\vers\l\installation\Python\Python311\python.exe -m venv saveTurtles
+```
+Une fois l'environnement python 3.11 créé, on lance l'installation des paquets et on active le serveur d'écoute
+```bash
+python311 -m venv saveTurtles 
+ou Z:\chemin\complet\vers\l\installation\Python\Python311\python.exe -m venv saveTurtles
+.\saveTurtles\Scripts\activate
+pip install -r .\requirements.txt
+python server.py
 ```
 
 #### Retour sur Unity
