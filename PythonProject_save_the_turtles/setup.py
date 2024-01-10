@@ -1,6 +1,7 @@
 ﻿from setuptools import setup, find_packages
 
 dependencies = [
+    "ultralytics>=8.0.237",
     "matplotlib>=3.3.0",
     "numpy>=1.22.2",
     "opencv-python>=4.6.0",
