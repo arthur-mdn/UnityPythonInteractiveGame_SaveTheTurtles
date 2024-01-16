@@ -3,11 +3,38 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // Logique spécifique au jeu...
+    public static GameManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void Start()
+    {
+        StartYoloDetection();
+    }
+
+    public void StartYoloDetection()
+    {
+        UdpConnectionManager.Instance.SendData("start_yolo_hands_detection");
+    }
+
+    public void ChangeToCalibrationScene()
+    {
+        SceneManager.LoadScene("BallGame");
+    }
 
     public void LoadGameScene()
     {
-        // Appelé après la calibration
         SceneManager.LoadScene("GameScene");
     }
 }

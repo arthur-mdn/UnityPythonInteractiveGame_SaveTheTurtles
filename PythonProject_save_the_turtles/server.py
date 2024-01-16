@@ -13,6 +13,55 @@ model = YOLO("yolo/yolov8n-pose.pt")
 video_source = "webcam"
 video_path = "Elements/wall_vid.mp4"
 
+def are_hands_in_air(keypoints, frame_height):
+    if not keypoints[0]:
+        return False
+    left_hand_y = keypoints[0][9][1]
+    right_hand_y = keypoints[0][10][1]
+    left_eye_y = keypoints[0][1][1]
+    right_eye_y = keypoints[0][2][1]
+
+    if left_hand_y == 0 or right_hand_y == 0:
+        return False
+
+    return left_hand_y < left_eye_y and right_hand_y < right_eye_y
+
+def start_yolo_hands_detection():
+    global model
+    cap = cv2.VideoCapture(0)
+    hands_in_air_counter = 0
+
+    while True:
+        success, frame = cap.read()
+
+        if not success:
+            break
+
+        results = model(frame)
+        keypoints = results[0].keypoints.xy.tolist()
+
+        hands_in_air = are_hands_in_air(keypoints, frame.shape[0])
+        if hands_in_air:
+            hands_in_air_counter += 1
+        else:
+            hands_in_air_counter = 0
+
+        if hands_in_air_counter >= 10:
+            print("Mains en l'air détectées")
+            message = {
+                "sender": "python",
+                "message": "change_scene_to_calibrate"
+            }
+            json_message = json.dumps(message)
+            sock.SendData(json_message)
+            break
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
 def detect_aruco_markers(image):
     # Paramètres ArUco
     aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
@@ -325,6 +374,8 @@ def listen_for_data():
             if(data_json['message'] != None):
                 if data_json['message'] == "start_calibration":
                     start_calibration()
+                elif data_json['message'] == "start_yolo_hands_detection":
+                    start_yolo_hands_detection()
                 elif data_json['message'] == "start_detection" and is_calibrated:
                     capture_running = True
                     capture_and_process_player_continuous()

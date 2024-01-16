@@ -91,6 +91,10 @@ public class UdpConnectionManager : MonoBehaviour
             Debug.Log(positions);
             CalibrationManager.Instance.UpdateWristPositions(positions);
         }
+        else if (messageType == "change_scene_to_calibrate")
+        {
+            GameManager.Instance.ChangeToCalibrationScene();
+        }
     }
 }
 
