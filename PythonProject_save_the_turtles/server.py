@@ -63,7 +63,6 @@ def start_yolo_hands_detection():
     cv2.destroyAllWindows()
 
 def detect_aruco_markers(image):
-    # Paramètres ArUco
     aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_ARUCO_ORIGINAL)
     aruco_params = cv2.aruco.DetectorParameters()
 
@@ -72,15 +71,35 @@ def detect_aruco_markers(image):
 
     if ids is not None:
         # S'assurer que les marqueurs requis sont détectés
-        required_markers = [10, 80]
+        required_markers = [10, 150, 200, 80]
         marker_positions = {}
 
-        for i, marker_id in enumerate(ids):
-            if marker_id[0] in required_markers:
-                marker_positions[marker_id[0]] = corners[i][0]
+        for i, marker_id in enumerate(ids.flatten()):
+            if marker_id in required_markers:
+                # Obtenez les coins du marqueur
+                marker_corner = corners[i].reshape((4, 2))
+
+                # Sélectionnez un coin spécifique basé sur l'ID du marqueur
+                if marker_id == 10:  # Marqueur haut gauche
+                    selected_corner = marker_corner[0]  # Coin supérieur gauche
+                elif marker_id == 150:  # Marqueur haut droit
+                    selected_corner = marker_corner[1]  # Coin supérieur droit
+                elif marker_id == 200:  # Marqueur bas gauche
+                    selected_corner = marker_corner[3]  # Coin inférieur gauche
+                elif marker_id == 80:  # Marqueur bas droit
+                    selected_corner = marker_corner[2]  # Coin inférieur droit
+
+                marker_positions[marker_id] = selected_corner
 
         if all(marker in marker_positions for marker in required_markers):
-            return marker_positions
+            # Ordonner les coins dans l'ordre haut gauche, haut droit, bas droit, bas gauche
+            ordered_positions = [
+                marker_positions[10],    # Haut gauche
+                marker_positions[150],   # Haut droit
+                marker_positions[80],    # Bas droit
+                marker_positions[200]    # Bas gauche
+            ]
+            return np.array(ordered_positions, dtype=np.float32)
         else:
             print("Missing required markers")
             return None
@@ -88,151 +107,88 @@ def detect_aruco_markers(image):
         print("No markers found")
         return None
 
-def order_points_with_aruco_markers(points, marker_positions):
-    # Calculer la distance de chaque point aux marqueurs ArUco
-    distances_to_marker_10 = np.sqrt((points[:, 0] - marker_positions[10][0][0]) ** 2 + (points[:, 1] - marker_positions[10][0][1]) ** 2)
-    distances_to_marker_80 = np.sqrt((points[:, 0] - marker_positions[80][0][0]) ** 2 + (points[:, 1] - marker_positions[80][0][1]) ** 2)
-
-    # Identifier les points les plus proches de chaque marqueur
-    top_left = points[np.argmin(distances_to_marker_10)]  # le plus proche du marqueur 10
-    bottom_right = points[np.argmin(distances_to_marker_80)]  # le plus proche du marqueur 80
-
-    # Créer une liste des points restants
-    remaining = [pt for pt in points if (pt != top_left).any() and (pt != bottom_right).any()]
-
-    # Vérifier s'il y a suffisamment de points restants
-    if len(remaining) < 2:
-        print("Not enough unique points were found")
-        return None  # ou vous pouvez gérer cette situation différemment
-
-    # Déterminer les points restants en haut à droite et en bas à gauche
-    # en comparant leurs coordonnées en X
-    if remaining[0][0] > remaining[1][0]:
-        top_right = remaining[0]
-        bottom_left = remaining[1]
-    else:
-        top_right = remaining[1]
-        bottom_left = remaining[0]
-
-    # Retourner les points ordonnés
-    return np.array([top_left, top_right, bottom_right, bottom_left], dtype="float32")
-
-
 def auto_detect_edges(image):
     orig = image.copy()
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
-    lower_red = np.array([0, 56, 170])
-    upper_red = np.array([23, 255, 255])
-
-    # Détection des contours rouges
-    mask_red = cv2.inRange(hsv, lower_red, upper_red)
-    kernel = np.ones((5,5), np.uint8)
-    mask_closed = cv2.morphologyEx(mask_red, cv2.MORPH_CLOSE, kernel)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    masked_gray = cv2.bitwise_and(gray, gray, mask=mask_closed)
-    blurred = cv2.GaussianBlur(masked_gray, (5, 5), 0)
-    edged = cv2.Canny(blurred, 50, 150)
-    
-    marker_positions = detect_aruco_markers(gray)  # gray est l'image en niveaux de gris
+
+    marker_positions = detect_aruco_markers(gray)
     if marker_positions is None:
-        print("Could not detect both ArUco markers")
+        print("Could not detect all required ArUco markers")
         return None
 
-    # Recherche des contours dans l'image des bords, et ne garde que les plus grands
-    contours, _ = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    contours = sorted(contours, key=cv2.contourArea, reverse=True)[:10]
-    screenCnt = None
-
-    # Boucle sur les contours
-    for contour in contours:
-        # Approximation du contour
-        peri = cv2.arcLength(contour, True)
-        approx = cv2.approxPolyDP(contour, 0.02 * peri, True)
-
-        # Si notre contour approximé a quatre points, alors
-        # nous pouvons supposer que nous avons trouvé notre écran
-        if len(approx) == 4:
-            screenCnt = approx
-            break
-
-    # Si on a trouvé un contour
-    if screenCnt is not None:
-        # Récupération des points du contour
-        points = screenCnt.reshape(4, 2)
-        # Réorganisation des points avec les carrés de couleur
-        ordered_points = order_points_with_aruco_markers(points, marker_positions)
-        img_with_corners = orig.copy()
-
-        # Dessiner les coins sur l'image
-        for i, point in enumerate(ordered_points):
-            x, y = point
-            cv2.circle(img_with_corners, (int(x), int(y)), 7, (0, 255, 0), -1)  # Dessine un cercle vert autour du coin
-            cv2.putText(img_with_corners, f"{i+1}", (int(x) - 25, int(y) - 25), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 255, 0), 2)  # Numérote le coin
-
-        # Affiche l'image avec les coins
-        cv2.imshow("Image with corners", img_with_corners)
-        cv2.waitKey(0)  # Attendez que l'utilisateur appuie sur une touche
-        cv2.destroyAllWindows()
-        return ordered_points
-    else:
-        print("No suitable contour found")
-        return None
-
+    return marker_positions
 
 def capture_and_process_image(tries=5):
     for _ in range(tries):
+        # Ouvrir la caméra
         cap = cv2.VideoCapture(0)
+
+        # Tenter de capturer une image
         success, frame = cap.read()
+
+        # Toujours libérer la caméra après la capture
         cap.release()
 
         if success:
-            #cv2.imshow("Captured Image", frame)
-            #cv2.waitKey(1)  # Attente non bloquante
-
+            # Utiliser la fonction auto_detect_edges pour traiter l'image capturée
             processed_points = auto_detect_edges(frame)
             if processed_points is not None:
-                print(processed_points)
-                #cv2.destroyWindow("Captured Image")  # Fermer la fenêtre après traitement
+                print("Calibration points detected:", processed_points)
+                # Dessiner les points de calibration sur l'image
+                for point in processed_points:
+                    cv2.circle(frame, (int(point[0]), int(point[1])), 5, (0, 255, 0), -1)  # Dessiner un cercle vert
+                # Afficher l'image avec les points de calibration
+                cv2.imshow("Calibration Points", frame)
+                cv2.waitKey(0)  # Attendre une touche pour fermer
+                cv2.destroyAllWindows()
                 return processed_points
             else:
-                print("Failed to detect edges on try: {}".format(_ + 1))
+                print("Failed to detect edges on try:", _ + 1)
         else:
-            print("Failed to capture image on try: {}".format(_ + 1))
+            print("Failed to capture image on try:", _ + 1)
 
-    #cv2.destroyWindow("Captured Image")  # S'assurer que la fenêtre est fermée en cas d'échec
+    # Si la calibration a échoué après toutes les tentatives
     print("Calibration failed after {} tries".format(tries))
     return None
 
+
 def capture_and_process_image_from_video(video_path, tries=5):
+    # Ouvrir le fichier vidéo
     cap = cv2.VideoCapture(video_path)
 
     for _ in range(tries):
+        # Lire une image du flux vidéo
         success, frame = cap.read()
 
         if success:
+            # Utiliser la fonction auto_detect_edges pour traiter l'image capturée
             processed_points = auto_detect_edges(frame)
             if processed_points is not None:
-                print(processed_points)
+                print("Calibration points detected:", processed_points)
                 return processed_points
             else:
-                print("Failed to detect edges on try: {}".format(_ + 1))
+                print("Failed to detect edges on try:", _ + 1)
         else:
-            print("Failed to read frame on try: {}".format(_ + 1))
+            print("Failed to read frame on try:", _ + 1)
 
-    print("Calibration failed after {} tries".format(tries))
+    # Fermer le fichier vidéo après les tentatives
     cap.release()
+
+    # Si la calibration a échoué après toutes les tentatives
+    print("Calibration failed after {} tries".format(tries))
     return None
 
-def transform_perspective(points, src_coords, dst_coords):
-    # Assurez-vous que points est un tableau NumPy avec la forme correcte
-    points = np.array(points, dtype="float32").reshape(-1, 1, 2)
 
-    # Calculer la matrice de transformation
+def transform_perspective(points, src_coords, dst_coords):
+    points = np.array(points, dtype="float32").points = points.reshape(-1, 1, 2)
+
+    # Calculer la matrice de transformation de perspective
     M = cv2.getPerspectiveTransform(src_coords, dst_coords)
 
-    # Appliquer la transformation aux points
+    # Appliquer la transformation de perspective
     transformed_points = cv2.perspectiveTransform(points, M)
+
+    # Redimensionner pour retourner une liste de points
     return transformed_points.reshape(-1, 2)
 
 
@@ -247,9 +203,9 @@ def capture_and_process_player_continuous():
     else:
         print("Invalid video source")
         return
-    
+
     dst_coords = np.array([[0, 0], [640, 0], [640, 360], [0, 360]], dtype="float32")  # Exemple de dimensions 16/9
-    
+
     while capture_running:
         success, frame = cap.read()
 
@@ -278,11 +234,11 @@ def capture_and_process_player_continuous():
                     cv2.circle(frame, (int(right_hand[0]), int(right_hand[1])), 10, (0, 0, 255), -1)
 
         if calibration_points is not None and len(hand_positions) > 0:
-            transformed_hand_positions = transform_perspective(hand_positions, np.array(calibration_points, dtype="float32"), dst_coords)
-            
+            transformed_hand_positions = transform_perspective(hand_positions, src_coords, dst_coords)
+
             max_width = 640  # Largeur maximale
             max_height = 360  # Hauteur maximale
-            
+
             # Envoi des positions des mains transformées à Unity
             message = {
                 "sender": "python",
@@ -300,9 +256,6 @@ def capture_and_process_player_continuous():
 
             cv2.imshow("Calibrated Hand Positions", calib_frame)
 
-            
-       
-
         # Afficher la vidéo avec les positions des mains dessinées
         cv2.imshow("Video Stream with Hand Positions", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -314,23 +267,24 @@ def capture_and_process_player_continuous():
 
 
 def calibrate_positions(positions, calibration_data):
-    # calibration_data est une liste de points calibrés [(x1, y1), (x2, y2), (x3, y3), (x4, y4)]
-    # Ici, vous devez appliquer une transformation basée sur ces points
-    # Cela pourrait être une transformation de perspective, un ajustement d'échelle, etc.
-
     calibrated_positions = []
 
-    # Exemple: ajuster les positions à une nouvelle échelle ou zone de jeu
+    # Calculer la matrice de transformation en utilisant les coordonnées des coins de la scène calibrée
+    src_coords = np.array([
+        calibration_data["top_left"],
+        calibration_data["top_right"],
+        calibration_data["bottom_left"],
+        calibration_data["bottom_right"]
+    ], dtype="float32")
+
     for pos in positions:
-        # Calculer la nouvelle position basée sur la calibration
-        # C'est un exemple simplifié. Vous devrez peut-être effectuer une transformation plus complexe
-        x_new = (pos[0] - calibration_data[0][0]) / (calibration_data[1][0] - calibration_data[0][0])
-        y_new = (pos[1] - calibration_data[0][1]) / (calibration_data[2][1] - calibration_data[0][1])
-        
+        # Appliquer la transformation de perspective
+        transformed_pos = transform_perspective([pos], src_coords, dst_coords)[0]
+
         # Ajouter la position calibrée à la liste
-        calibrated_positions.append((x_new, y_new))
-        
+        calibrated_positions.append(transformed_pos)
     return calibrated_positions
+
 
 def start_calibration():
     print("Calibration process started...")
@@ -343,10 +297,11 @@ def start_calibration():
     else:
         print("Invalid video source")
         return
-    
+
     if points is not None:
         calibration_points = points
         is_calibrated = True
+        print("Calibration successful")
         message = {
             "sender": "python",
             "message": "calibration_success",
@@ -385,16 +340,16 @@ def listen_for_data():
                     capture_running = False
                     print("stop game")
                 elif data_json['message'] == "change_source":
-                    new_source = data_json['data'] 
+                    new_source = data_json['data']
                     change_video_source(new_source)
             pass
-        
+
 # Créer et démarrer le thread
 listener_thread = threading.Thread(target=listen_for_data)
 listener_thread.daemon = True
-listener_thread.start()   
+listener_thread.start()
 
 
-sock.SendData('Sent from Python');
+sock.SendData('Sent from Python')
 while True:
     time.sleep(0.01)
