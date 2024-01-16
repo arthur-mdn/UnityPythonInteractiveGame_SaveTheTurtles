@@ -178,23 +178,31 @@ def capture_and_process_image_from_video(video_path, tries=5):
     print("Calibration failed after {} tries".format(tries))
     return None
 
-
 def transform_perspective(points, src_coords, dst_coords):
-    points = np.array(points, dtype="float32").points = points.reshape(-1, 1, 2)
+    # Convertir la liste de points en tableau NumPy
+    points_array = np.array(points, dtype="float32").reshape(-1, 1, 2)
 
     # Calculer la matrice de transformation de perspective
     M = cv2.getPerspectiveTransform(src_coords, dst_coords)
 
     # Appliquer la transformation de perspective
-    transformed_points = cv2.perspectiveTransform(points, M)
+    transformed_points = cv2.perspectiveTransform(points_array, M)
 
     # Redimensionner pour retourner une liste de points
     return transformed_points.reshape(-1, 2)
 
 
-
 def capture_and_process_player_continuous():
     global capture_running, calibration_points, video_source
+
+    if calibration_points is None:
+        print("Calibration is not yet done.")
+        return
+
+    # Les coordonnées sources sont les points de calibration
+    src_coords = np.array(calibration_points, dtype="float32")
+
+    dst_coords = np.array([[0, 0], [640, 0], [640, 360], [0, 360]], dtype="float32")  # Exemple de dimensions 16/9
 
     if video_source == "webcam":
         cap = cv2.VideoCapture(0)
@@ -203,8 +211,6 @@ def capture_and_process_player_continuous():
     else:
         print("Invalid video source")
         return
-
-    dst_coords = np.array([[0, 0], [640, 0], [640, 360], [0, 360]], dtype="float32")  # Exemple de dimensions 16/9
 
     while capture_running:
         success, frame = cap.read()
