@@ -201,7 +201,6 @@ def capture_and_process_player_continuous():
 
     # Les coordonnées sources sont les points de calibration
     src_coords = np.array(calibration_points, dtype="float32")
-
     dst_coords = np.array([[0, 0], [640, 0], [640, 360], [0, 360]], dtype="float32")  # Exemple de dimensions 16/9
 
     if video_source == "webcam":
@@ -220,16 +219,16 @@ def capture_and_process_player_continuous():
             break
 
         # Traitement des keypoints et détection des mains
+#         results = model(frame, conf=0.7)
         results = model(frame)
         keypoints = results[0].keypoints.xy.tolist()
 
         hand_positions = []
+        transformed_hand_positions = []
         for person in keypoints:
             if len(person) > 0:
                 left_hand = person[9]  # left_wrist
                 right_hand = person[10]  # right_wrist
-                print(right_hand)
-                print(left_hand)
                 # Vérifier si les coordonnées des mains sont valides avant de les ajouter
                 if 0 < left_hand[0] < frame.shape[1] and 0 < left_hand[1] < frame.shape[0]:
                     hand_positions.append(left_hand)
@@ -240,7 +239,10 @@ def capture_and_process_player_continuous():
                     cv2.circle(frame, (int(right_hand[0]), int(right_hand[1])), 10, (0, 0, 255), -1)
 
         if calibration_points is not None and len(hand_positions) > 0:
-            transformed_hand_positions = transform_perspective(hand_positions, src_coords, dst_coords)
+            if len(hand_positions) > 0:
+                transformed_hand_positions = transform_perspective(hand_positions, src_coords, dst_coords)
+            else:
+                transformed_hand_positions = []
 
             max_width = 640  # Largeur maximale
             max_height = 360  # Hauteur maximale
@@ -251,6 +253,7 @@ def capture_and_process_player_continuous():
                 "message": "hands_positions",
                 "data": [[pos[0] / max_width, pos[1] / max_height] for pos in transformed_hand_positions]
             }
+            print([[pos[0] / max_width, pos[1] / max_height] for pos in transformed_hand_positions])
             json_message = json.dumps(message)
             print("Sending JSON: ", json_message)
             sock.SendData(json_message)
