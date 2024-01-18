@@ -11,10 +11,11 @@ calibration_points = None
 capture_running = False
 model = YOLO("yolo/yolov8n-pose.pt")
 video_source = "webcam"
-webcam_index = 0
+webcam_index = 1
 webcam_backend = cv2.CAP_DSHOW # cv2.CAP_DSHOW pour les webcams Windows, Utilisez cv2.CAP_ANY si vous rencontrez des problèmes
 video_path = "Elements/wall_vid.mp4"
 show_calibrate_result = False
+show_live_transformed_calibrated_positions = True
 
 def are_hands_in_air(keypoints, frame_height):
     if not keypoints[0]:
@@ -198,7 +199,7 @@ def transform_perspective(points, src_coords, dst_coords):
 
 
 def capture_and_process_player_continuous():
-    global capture_running, calibration_points, video_source
+    global capture_running, calibration_points, video_source, show_live_transformed_calibrated_positions
 
     if calibration_points is None:
         print("Calibration is not yet done.")
@@ -223,10 +224,20 @@ def capture_and_process_player_continuous():
             print("Failed to read frame from video")
             break
 
-        # Traitement des keypoints et détection des mains
-#         results = model(frame, conf=0.7)
         results = model(frame)
         keypoints = results[0].keypoints.xy.tolist()
+
+        if show_live_transformed_calibrated_positions:
+            M = cv2.getPerspectiveTransform(src_coords, dst_coords)
+            transformed_frame = cv2.warpPerspective(frame, M, (640, 360))
+            for person in keypoints:
+                for point in person:
+                    transformed_point = transform_perspective([point], src_coords, dst_coords)[0]
+                    cv2.circle(transformed_frame, (int(transformed_point[0]), int(transformed_point[1])), 5, (0, 255, 0), -1)
+
+            cv2.imshow("Transformed View", transformed_frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
         hand_positions = []
         transformed_hand_positions = []
@@ -262,18 +273,19 @@ def capture_and_process_player_continuous():
             json_message = json.dumps(message)
             print("Sending JSON: ", json_message)
             sock.SendData(json_message)
+            if show_live_transformed_calibrated_positions:
+                # Dessiner les mains calibrées sur une nouvelle image
+                calib_frame = np.zeros((360, 640, 3), dtype=np.uint8)
+                for pos in transformed_hand_positions:
+                    cv2.circle(calib_frame, (int(pos[0]), int(pos[1])), 10, (255, 0, 0), -1)
 
-            # Dessiner les mains calibrées sur une nouvelle image
-            calib_frame = np.zeros((360, 640, 3), dtype=np.uint8)
-            for pos in transformed_hand_positions:
-                cv2.circle(calib_frame, (int(pos[0]), int(pos[1])), 10, (255, 0, 0), -1)
+                cv2.imshow("Calibrated Hand Positions", calib_frame)
 
-            cv2.imshow("Calibrated Hand Positions", calib_frame)
-
-        # Afficher la vidéo avec les positions des mains dessinées
-        cv2.imshow("Video Stream with Hand Positions", frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+        if show_live_transformed_calibrated_positions:
+            # Afficher la vidéo avec les positions des mains dessinées
+            cv2.imshow("Video Stream with Hand Positions", frame)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
     cap.release()
     cv2.destroyAllWindows()
