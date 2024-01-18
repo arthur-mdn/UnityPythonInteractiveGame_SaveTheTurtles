@@ -35,11 +35,6 @@ Puis on lance l'installation des paquets
 pip install -r .\requirements.txt
 ```
 
-## Utilisation
-### Unity
-Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`** 
-Ouvrez la scène `BallGame` pour démarrer.
-
 ### Python
 #### Pour lancer l'écoute du serveur python (sur Windows)
 
@@ -47,5 +42,13 @@ Ouvrez la scène `BallGame` pour démarrer.
 python server.py
 ```
 
-#### Retour sur Unity
-Une fois l'écoute du serveur python lancée, démarrer la scène avec le bouton play.
+## Utilisation
+### Unity
+Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`** 
+Ouvrez la scène `HomeScreen` pour démarrer.
+Lancez la scène avec le bouton play.
+
+## Fonctionnement
+Au premier lancement, il va falloir "lever les mains en l'air" pour lancer une calibration.
+Écartez-vous du champ de vision de la caméra pour lancer la calibration.
+Une fois la calibration terminée, la scène de jeu se lance automatiquement.
