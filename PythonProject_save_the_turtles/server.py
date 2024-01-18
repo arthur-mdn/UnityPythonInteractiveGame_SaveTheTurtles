@@ -12,6 +12,7 @@ capture_running = False
 model = YOLO("yolo/yolov8n-pose.pt")
 video_source = "webcam"
 video_path = "Elements/wall_vid.mp4"
+show_calibrate_result = False
 
 def are_hands_in_air(keypoints, frame_height):
     if not keypoints[0]:
@@ -119,6 +120,7 @@ def auto_detect_edges(image):
     return marker_positions
 
 def capture_and_process_image(tries=5):
+    global show_calibrate_result
     for _ in range(tries):
         # Ouvrir la caméra
         cap = cv2.VideoCapture(0)
@@ -138,9 +140,10 @@ def capture_and_process_image(tries=5):
                 for point in processed_points:
                     cv2.circle(frame, (int(point[0]), int(point[1])), 5, (0, 255, 0), -1)  # Dessiner un cercle vert
                 # Afficher l'image avec les points de calibration
-                cv2.imshow("Calibration Points", frame)
-                cv2.waitKey(0)  # Attendre une touche pour fermer
-                cv2.destroyAllWindows()
+                if show_calibrate_result:
+                    cv2.imshow("Calibration Points", frame)
+                    cv2.waitKey(0)  # Attendre une touche pour fermer
+                    cv2.destroyAllWindows()
                 return processed_points
             else:
                 print("Failed to detect edges on try:", _ + 1)
