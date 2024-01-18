@@ -11,6 +11,8 @@ calibration_points = None
 capture_running = False
 model = YOLO("yolo/yolov8n-pose.pt")
 video_source = "webcam"
+webcam_index = 0
+webcam_backend = cv2.CAP_DSHOW # cv2.CAP_DSHOW pour les webcams Windows, Utilisez cv2.CAP_ANY si vous rencontrez des problèmes
 video_path = "Elements/wall_vid.mp4"
 show_calibrate_result = False
 
@@ -29,7 +31,7 @@ def are_hands_in_air(keypoints, frame_height):
 
 def start_yolo_hands_detection():
     global model
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(webcam_index, webcam_backend)
     hands_in_air_counter = 0
 
     while True:
@@ -77,10 +79,10 @@ def detect_aruco_markers(image):
 
         for i, marker_id in enumerate(ids.flatten()):
             if marker_id in required_markers:
-                # Obtenez les coins du marqueur
+                # Obtenir les coins du marqueur
                 marker_corner = corners[i].reshape((4, 2))
 
-                # Sélectionnez un coin spécifique basé sur l'ID du marqueur
+                # Sélectionner un coin spécifique basé sur l'ID du marqueur
                 if marker_id == 10:  # Marqueur haut gauche
                     selected_corner = marker_corner[0]  # Coin supérieur gauche
                 elif marker_id == 150:  # Marqueur haut droit
@@ -119,11 +121,11 @@ def auto_detect_edges(image):
 
     return marker_positions
 
-def capture_and_process_image(tries=5):
+def capture_and_process_image(tries=10):
     global show_calibrate_result
     for _ in range(tries):
         # Ouvrir la caméra
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(webcam_index, webcam_backend)
 
         # Tenter de capturer une image
         success, frame = cap.read()
@@ -155,7 +157,7 @@ def capture_and_process_image(tries=5):
     return None
 
 
-def capture_and_process_image_from_video(video_path, tries=5):
+def capture_and_process_image_from_video(video_path, tries=10):
     # Ouvrir le fichier vidéo
     cap = cv2.VideoCapture(video_path)
 
@@ -207,7 +209,7 @@ def capture_and_process_player_continuous():
     dst_coords = np.array([[0, 0], [640, 0], [640, 360], [0, 360]], dtype="float32")  # Exemple de dimensions 16/9
 
     if video_source == "webcam":
-        cap = cv2.VideoCapture(0)
+        cap = cv2.VideoCapture(webcam_index, webcam_backend)
     elif video_source == "file":
         cap = cv2.VideoCapture(video_path)
     else:
@@ -303,9 +305,9 @@ def start_calibration():
     global is_calibrated, calibration_points, video_source
 
     if video_source == "webcam":
-        points = capture_and_process_image()  # Utilisez la webcam pour la capture
+        points = capture_and_process_image()  # Utiliser la webcam pour la capture
     elif video_source == "file":
-        points = capture_and_process_image_from_video(video_path)  # Utilisez le fichier vidéo pour la capture
+        points = capture_and_process_image_from_video(video_path)  # Utiliser le fichier vidéo pour la capture
     else:
         print("Invalid video source")
         return
