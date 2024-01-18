@@ -3,6 +3,9 @@
 ## Introduction
 Ce projet consite à relier la bibliothèque Python3 `Ultralytics YoloV8` utilisée pour détecter un joueur sur une source vidéo et en extraire les positions des mains. Puis communiquer avec Unity pour créer un jeu interactif en utilisant les données détectées.
 
+# Prérequis
+- [Python 3.11](https://www.python.org/downloads/release/python-3110/)
+- [Unity `2022.3.10f1`](https://unity3d.com/fr/get-unity/download/archive)
 
 ## Installation
 Cloner ce repository en local
