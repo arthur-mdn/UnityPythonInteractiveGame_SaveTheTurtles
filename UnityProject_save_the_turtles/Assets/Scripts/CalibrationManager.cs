@@ -18,6 +18,7 @@ public class CalibrationManager : MonoBehaviour
     private GameObject[] wristInstances;
     private int maxHands = 2; // Nombre maximum de mains à gérer
     public static CalibrationManager Instance { get; private set; }
+    public bool invertXAxis = false; // Inverser l'axe X du plan (pour jouer direct via webcam, sans projection)
 
     void Awake()
     {
@@ -88,6 +89,8 @@ public class CalibrationManager : MonoBehaviour
         Mesh mesh = planeGameObject.GetComponent<MeshFilter>().mesh;
         float planeWidth = mesh.bounds.size.x * planeGameObject.transform.localScale.x;
         float planeHeight = mesh.bounds.size.z * planeGameObject.transform.localScale.z;
+
+        if (invertXAxis) x = 1 - x; // Inverser l'axe X
 
         y = 1 - y; // Inverser l'axe Y
 
