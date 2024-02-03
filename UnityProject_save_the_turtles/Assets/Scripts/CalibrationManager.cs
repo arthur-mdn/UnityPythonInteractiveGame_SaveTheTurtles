@@ -20,6 +20,11 @@ public class CalibrationManager : MonoBehaviour
     public static CalibrationManager Instance { get; private set; }
     public bool invertXAxis = true; // Inverser l'axe X du plan (pour jouer direct via webcam, sans projection)
 
+    public float slowLerpSpeed = 5f; // Vitesse de Lerp lente
+    public float fastLerpSpeed = 400f; // Vitesse de Lerp rapide
+    public float distanceThreshold = 0.1f; // Seuil de distance pour basculer entre Lerp lent et rapide
+
+
     void Awake()
     {
         if (Instance == null)
@@ -66,19 +71,19 @@ public class CalibrationManager : MonoBehaviour
     {
         int index = 0;
         foreach (JSONNode pos in handPositions)
-        {
-            if (index >= maxHands) break; // Ne pas dépasser le nombre max de mains gérées
+            {
+                if (index >= maxHands) break; // Ne pas dépasser le nombre max de mains gérées
 
-            Vector3 targetPos = ConvertToPlanePosition(pos[0].AsFloat, pos[1].AsFloat);
-            if (!wristInstances[index].activeSelf) wristInstances[index].SetActive(true);
+                Vector3 targetPos = ConvertToPlanePosition(pos[0].AsFloat, pos[1].AsFloat);
+                if (!wristInstances[index].activeSelf) wristInstances[index].SetActive(true);
 
-            // Interpolation linéaire pour lisser le mouvement
-            wristInstances[index].transform.position = Vector3.Lerp(wristInstances[index].transform.position, targetPos, Time.deltaTime * 70);
+                float distance = Vector3.Distance(wristInstances[index].transform.position, targetPos);
+                float lerpSpeed = distance > distanceThreshold ? fastLerpSpeed : slowLerpSpeed;
 
-            ResetCollider(wristInstances[index]);
+                wristInstances[index].transform.position = Vector3.Lerp(wristInstances[index].transform.position, targetPos, lerpSpeed * Time.deltaTime);
 
-            index++;
-        }
+                index++;
+            }
 
         // Désactiver les GameObjects inutilisés
         for (int i = index; i < maxHands; i++)
