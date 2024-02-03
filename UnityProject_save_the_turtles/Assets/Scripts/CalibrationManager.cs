@@ -18,7 +18,7 @@ public class CalibrationManager : MonoBehaviour
     private GameObject[] wristInstances;
     private int maxHands = 2; // Nombre maximum de mains à gérer
     public static CalibrationManager Instance { get; private set; }
-    public bool invertXAxis = false; // Inverser l'axe X du plan (pour jouer direct via webcam, sans projection)
+    public bool invertXAxis = true; // Inverser l'axe X du plan (pour jouer direct via webcam, sans projection)
 
     void Awake()
     {
@@ -46,7 +46,10 @@ public class CalibrationManager : MonoBehaviour
 
         Debug.Log("Largeur du Plane: " + planeWidth);
         Debug.Log("Hauteur du Plane: " + planeHeight);
-        UdpConnectionManager.Instance.SendData("start_calibration");
+        if(UdpConnectionManager.Instance != null)
+        {
+            UdpConnectionManager.Instance.SendData("start_calibration");
+        }
     }
 
     private void ResetCollider(GameObject wristInstance)
