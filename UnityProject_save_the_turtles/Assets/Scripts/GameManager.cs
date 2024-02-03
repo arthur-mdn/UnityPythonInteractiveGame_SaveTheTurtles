@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public int Score { get; private set; } = 0;
 
     private void Awake()
     {
@@ -25,7 +26,11 @@ public class GameManager : MonoBehaviour
 
     public void StartYoloDetection()
     {
-        UdpConnectionManager.Instance.SendData("start_yolo_hands_detection");
+    if (UdpConnectionManager.Instance != null)
+        {
+            UdpConnectionManager.Instance.SendData("start_yolo_hands_detection");
+        }
+
     }
 
     public void ChangeToCalibrationScene()
@@ -36,5 +41,16 @@ public class GameManager : MonoBehaviour
     public void LoadGameScene()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public void AddScore(int amount)
+    {
+        Score += amount;
+        Debug.Log("Score: " + Score);
+    }
+
+    public int GetScore()
+    {
+        return Score;
     }
 }

@@ -100,6 +100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: lowPTurtle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6263d7f94386d12458e3b7a0e6b361a9, type: 3}
+      propertyPath: m_TagString
+      value: Turtle
+      objectReference: {fileID: 0}
     - target: {fileID: 8417361359673230750, guid: 6263d7f94386d12458e3b7a0e6b361a9, type: 3}
       propertyPath: m_AABB.m_Extent.z
       value: 0.01

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class TurtleSpawner : MonoBehaviour
 {
-    public GameObject turtlePrefab; // Assignez votre prefab de tortue ici dans l'inspecteur
-    public Transform[] spawnPoints; // Assignez vos points de spawn ici dans l'inspecteur
+    public GameObject turtlePrefab;
+    public Transform[] spawnPoints;
     public float spawnInterval = 3f; // Intervalle en secondes entre chaque apparition de tortue
 
     private void Start()
