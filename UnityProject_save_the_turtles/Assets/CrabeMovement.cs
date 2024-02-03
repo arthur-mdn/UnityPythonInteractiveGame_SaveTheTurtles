@@ -10,17 +10,21 @@ public class CrabeMovement : MonoBehaviour
         FindClosestTurtle();
         if (targetTurtle != null)
         {
-            // Se déplacer vers la tortue cible
-             Vector3 targetDirection = (targetTurtle.transform.position - transform.position).normalized;
-
-            // Orienter le crabe vers la direction cible
-            Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5);
-
-            // Se déplacer vers la tortue cible
-            transform.position = Vector3.MoveTowards(transform.position, targetTurtle.transform.position, speed * Time.deltaTime);
-
+            MoveTowardsTarget();
         }
+    }
+
+    void MoveTowardsTarget()
+    {
+        // Calculer la direction vers la tortue cible
+        Vector3 targetDirection = (targetTurtle.transform.position - transform.position).normalized;
+
+        // Orienter le crabe vers la tortue cible
+        Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5);
+
+        // Se déplacer vers la tortue cible
+        transform.position = Vector3.MoveTowards(transform.position, targetTurtle.transform.position, speed * Time.deltaTime);
     }
 
     void FindClosestTurtle()
@@ -42,16 +46,21 @@ public class CrabeMovement : MonoBehaviour
         targetTurtle = closestTurtle;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Turtle"))
         {
-            Destroy(other.gameObject); // Détruire la tortue
+            // Détruire la tortue
+            Destroy(other.gameObject);
+
+            // Mettre à jour le score via le GameManager, si disponible
             if (GameManager.Instance != null)
             {
-                GameManager.Instance.AddScore(-1); // Retirer un point
+                GameManager.Instance.AddScore(-1); // Retirer un point pour la destruction d'une tortue
             }
-            Destroy(gameObject); // Détruire le crabe
+
+            // Chercher la prochaine tortue la plus proche
+            FindClosestTurtle();
         }
     }
 }
