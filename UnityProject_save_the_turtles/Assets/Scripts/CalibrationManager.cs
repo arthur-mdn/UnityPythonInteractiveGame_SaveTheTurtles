@@ -21,8 +21,8 @@ public class CalibrationManager : MonoBehaviour
     public bool invertXAxis = true; // Inverser l'axe X du plan (pour jouer direct via webcam, sans projection)
 
     public float slowLerpSpeed = 5f; // Vitesse de Lerp lente
-    public float fastLerpSpeed = 400f; // Vitesse de Lerp rapide
-    public float distanceThreshold = 0.1f; // Seuil de distance pour basculer entre Lerp lent et rapide
+    public float fastLerpSpeed = 300f; // Vitesse de Lerp rapide
+    public float distanceThreshold = 0.11f; // Seuil de distance pour basculer entre Lerp lent et rapide
 
 
     void Awake()
@@ -81,6 +81,8 @@ public class CalibrationManager : MonoBehaviour
                 float lerpSpeed = distance > distanceThreshold ? fastLerpSpeed : slowLerpSpeed;
 
                 wristInstances[index].transform.position = Vector3.Lerp(wristInstances[index].transform.position, targetPos, lerpSpeed * Time.deltaTime);
+
+                ResetCollider(wristInstances[index]);
 
                 index++;
             }
