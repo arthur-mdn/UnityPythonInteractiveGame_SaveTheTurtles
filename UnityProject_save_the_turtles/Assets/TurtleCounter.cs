@@ -6,7 +6,6 @@ public class TurtleCounter : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Turtle"))
         {
-            Debug.Log("Turtle has been counted.");
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.AddScore(1);
