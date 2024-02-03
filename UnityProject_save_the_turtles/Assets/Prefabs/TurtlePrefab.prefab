@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 641828518196060950}
-  - component: {fileID: -1620351379617355439}
   m_Layer: 0
   m_Name: TurtlePrefab
   m_TagString: Untagged
@@ -33,19 +32,6 @@ Transform:
   - {fileID: 2900993229263016579}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &-1620351379617355439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2876873279870884936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1bed5de7bad28f48b6fd85566f3cb09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!1001 &3443244381878121832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -128,6 +114,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6263d7f94386d12458e3b7a0e6b361a9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 165369629103022150}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6263d7f94386d12458e3b7a0e6b361a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3627678605927472306}
   m_SourcePrefab: {fileID: 100100000, guid: 6263d7f94386d12458e3b7a0e6b361a9, type: 3}
 --- !u!1 &2524748439921182777 stripped
 GameObject:
@@ -182,6 +171,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.46, y: 1.89, z: 3.74}
   m_Center: {x: 0, y: 0, z: -1.52}
+--- !u!114 &3627678605927472306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2524748439921182777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1bed5de7bad28f48b6fd85566f3cb09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
 --- !u!4 &2900993229263016579 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6263d7f94386d12458e3b7a0e6b361a9, type: 3}
