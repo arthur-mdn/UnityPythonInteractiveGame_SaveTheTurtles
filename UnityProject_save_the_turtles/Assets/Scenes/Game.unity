@@ -1772,7 +1772,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1679015822}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a3155f96050f4344a91db95868cfb22d, type: 3}
   m_Name: 
@@ -1811,6 +1811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turtlePrefab: {fileID: 2876873279870884936, guid: 488071c0cdd654f4a89f59e5252ba058, type: 3}
+  particlePrefab: {fileID: 3800202111661741368, guid: a484d36ea5680e142b520dd6178d7902, type: 3}
   spawnPoints:
   - {fileID: 535100990}
   - {fileID: 1315308202}
@@ -1821,6 +1822,7 @@ MonoBehaviour:
   - {fileID: 494381828}
   - {fileID: 1673886626}
   spawnInterval: 2
+  particleDuration: 1
 --- !u!114 &1679015826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1828,7 +1830,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1679015822}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7102fcda5442f0c40ab433ba6e5bc9a5, type: 3}
   m_Name: 
