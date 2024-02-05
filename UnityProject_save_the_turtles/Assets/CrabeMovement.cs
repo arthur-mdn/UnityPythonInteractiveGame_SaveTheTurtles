@@ -62,5 +62,10 @@ public class CrabeMovement : MonoBehaviour
             // Chercher la prochaine tortue la plus proche
             FindClosestTurtle();
         }
+        // si c'est Wrist, détruire crabe
+        if (other.gameObject.CompareTag("Wrist"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

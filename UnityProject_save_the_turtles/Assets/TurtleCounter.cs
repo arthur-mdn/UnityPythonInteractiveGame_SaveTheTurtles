@@ -6,9 +6,9 @@ public class TurtleCounter : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Turtle"))
         {
-            if (GameManager.Instance != null)
+            if (GameGameManager.Instance != null)
             {
-                GameManager.Instance.AddScore(1);
+                GameGameManager.Instance.AddScore(1);
 
                 // Vérifie si l'objet tortue a un parent et détruit le parent
                 if (other.transform.parent != null)
