@@ -1841,6 +1841,8 @@ MonoBehaviour:
   - {fileID: 2114284097}
   - {fileID: 1073593615}
   spawnInterval: 10
+  minimumSpawnInterval: 0.5
+  spawnAcceleration: 0.5
 --- !u!114 &1679015828
 MonoBehaviour:
   m_ObjectHideFlags: 0
