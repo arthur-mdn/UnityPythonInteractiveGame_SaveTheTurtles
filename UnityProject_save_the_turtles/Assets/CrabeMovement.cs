@@ -50,8 +50,11 @@ public class CrabeMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Turtle"))
         {
+            GameObject turtleParent = other.transform.parent.gameObject; // Récupérer le parent de la tortue
+
             // Détruire la tortue
-            Destroy(other.gameObject);
+            Destroy(turtleParent); // Détruire le parent au lieu de l'objet enfant directement
+
 
             // Mettre à jour le score via le GameManager, si disponible
             if (GameGameManager.Instance != null)
