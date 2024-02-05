@@ -54,9 +54,10 @@ public class CrabeMovement : MonoBehaviour
             Destroy(other.gameObject);
 
             // Mettre à jour le score via le GameManager, si disponible
-            if (GameManager.Instance != null)
+            if (GameGameManager.Instance != null)
             {
-                GameManager.Instance.AddScore(-1); // Retirer un point pour la destruction d'une tortue
+                //GameGameManager.Instance.AddScore(-1); // Retirer un point pour la destruction d'une tortue
+                GameGameManager.Instance.LoseLife();
             }
 
             // Chercher la prochaine tortue la plus proche
