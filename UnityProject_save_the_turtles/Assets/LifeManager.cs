@@ -15,7 +15,7 @@ public class LifeManager : MonoBehaviour
     {
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+//            DontDestroyOnLoad(gameObject);
         } else {
             Destroy(gameObject);
         }
