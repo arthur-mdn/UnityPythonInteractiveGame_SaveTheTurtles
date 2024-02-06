@@ -16,7 +16,7 @@ public class CrabeSpawner : MonoBehaviour
 
     private IEnumerator SpawnCrabes()
     {
-        while (true)
+        while (!GameGameManager.Instance.Gameover)
         {
             yield return new WaitForSeconds(spawnInterval);
 

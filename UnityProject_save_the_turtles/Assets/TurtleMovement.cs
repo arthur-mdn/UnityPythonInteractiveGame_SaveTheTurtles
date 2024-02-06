@@ -15,6 +15,7 @@ public class TurtleMovement : MonoBehaviour
 
     void Update()
     {
+        if (GameGameManager.Instance.Gameover) return;
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 5);
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }

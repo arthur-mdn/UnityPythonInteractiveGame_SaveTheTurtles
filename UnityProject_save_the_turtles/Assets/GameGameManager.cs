@@ -6,6 +6,7 @@ public class GameGameManager : MonoBehaviour
     public static GameGameManager Instance { get; private set; }
     public int Score { get; private set; } = 0;
     public int Lives { get; private set; } = 5;
+    public bool Gameover { get; private set; } = false;
 
     public int GetLives() {
         return Lives;
@@ -44,11 +45,13 @@ public class GameGameManager : MonoBehaviour
     }
 
      private void CheckGameOver()
-    {
-        if (Lives <= 0)
-        {
-            Debug.Log("Game Over!");
-            Time.timeScale = 0;
-        }
-    }
+     {
+         if (Lives <= 0 && !Gameover)
+         {
+             Debug.Log("Game Over!");
+             Gameover = true;
+             //Time.timeScale = 0;
+             // Afficher l'écran de gameover ici, si nécessaire
+         }
+     }
 }

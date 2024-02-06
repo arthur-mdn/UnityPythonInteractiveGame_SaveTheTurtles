@@ -7,6 +7,7 @@ public class CrabeMovement : MonoBehaviour
 
     void Update()
     {
+        if (GameGameManager.Instance.Gameover) return;
         FindClosestTurtle();
         if (targetTurtle != null)
         {

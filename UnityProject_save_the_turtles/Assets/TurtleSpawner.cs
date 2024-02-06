@@ -6,7 +6,7 @@ public class TurtleSpawner : MonoBehaviour
     public GameObject turtlePrefab;
     public GameObject particlePrefab; // Référence au ParticlePrefab
     public Transform[] spawnPoints;
-    public float spawnInterval = 3f; // Intervalle entre chaque apparition de tortue
+    public float spawnInterval = 2f; // Intervalle entre chaque apparition de tortue
     public float particleDuration = 1f; // Durée d'exécution du système de particules avant de faire apparaître la tortue
 
     private void Start()
@@ -16,7 +16,7 @@ public class TurtleSpawner : MonoBehaviour
 
     private IEnumerator SpawnTurtles()
     {
-        while (true) // Boucle infinie pour continuer à faire apparaître des tortues
+        while (!GameGameManager.Instance.Gameover) // Boucle infinie pour continuer à faire apparaître des tortues
         {
             yield return new WaitForSeconds(spawnInterval); // Attendre un intervalle avant de faire apparaître la prochaine tortue
 
@@ -31,7 +31,10 @@ public class TurtleSpawner : MonoBehaviour
             yield return new WaitForSeconds(particleDuration);
 
             // Faire apparaître une tortue à ce point
-            Instantiate(turtlePrefab, spawnPoint.position, spawnPoint.rotation);
+           if (!GameGameManager.Instance.Gameover)
+           {
+               Instantiate(turtlePrefab, spawnPoint.position, spawnPoint.rotation);
+           }
 
             // Optionnel : désactiver ou détruire le ParticlePrefab
             Destroy(particleInstance);
