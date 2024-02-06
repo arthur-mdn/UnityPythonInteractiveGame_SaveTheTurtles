@@ -45,7 +45,7 @@ python server.py
 ## Utilisation
 ### Unity
 Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`** 
-Ouvrez la scène `HomeScreen` pour démarrer.
+Ouvrez la scène `StartScreen` pour démarrer.
 Lancez la scène avec le bouton play.
 
 ## Fonctionnement
