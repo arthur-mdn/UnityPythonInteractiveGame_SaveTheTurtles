@@ -1,15 +1,15 @@
 using UnityEngine;
-using TMPro; // Assurez-vous d'importer l'espace de noms pour TextMeshPro
+using TMPro;
 
 public class ScoreDisplay : MonoBehaviour
 {
-    public TMP_Text scoreText; // Référence à l'élément TextMeshPro UI pour afficher le score
+    public TMP_Text scoreText;
 
     private void Update()
     {
-        if (GameGameManager.Instance != null) // Vérifiez si l'instance de GameGameManager existe
+        if (GameGameManager.Instance != null)
         {
-            scoreText.text = "Score: " + GameGameManager.Instance.GetScore(); // Mettez à jour le texte du score
+            scoreText.text = "Score: " + GameGameManager.Instance.GetScore();
         }
     }
 }

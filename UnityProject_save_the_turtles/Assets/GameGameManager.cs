@@ -18,14 +18,12 @@ public class GameGameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-//            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
     }
-
 
     public void AddScore(int amount)
     {
@@ -53,7 +51,6 @@ public class GameGameManager : MonoBehaviour
              Gameover = true;
              gameOverUI.SetActive(true);
              //Time.timeScale = 0;
-             // Afficher l'écran de gameover ici, si nécessaire
          }
      }
 }

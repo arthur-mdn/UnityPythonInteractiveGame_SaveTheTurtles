@@ -12,7 +12,7 @@ public class RestartProgress : MonoBehaviour
 
     private void Update()
     {
-        progressBar.fillAmount = fillAmount; // Assurez-vous de mettre à jour la barre de progression dans Update
+        progressBar.fillAmount = fillAmount; // Mettre à jour la barre de progression dans Update
     }
 
     private void OnTriggerEnter(Collider other)
@@ -59,14 +59,14 @@ public class RestartProgress : MonoBehaviour
             yield return null;
         }
 
-        // Recharger la scène ici, une fois que la barre est pleine
+        // Recharger la scène, une fois que la barre est pleine
         Debug.Log("Restarting scene");
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private IEnumerator DrainProgress()
     {
-        while (fillAmount > 0f && !isWristInContact) // Assurez-vous de drainer seulement si le Wrist n'est pas en contact
+        while (fillAmount > 0f && !isWristInContact) // Drainer seulement si le Wrist n'est pas en contact
         {
             fillAmount -= Time.deltaTime * fillSpeed * 2;
             yield return null;

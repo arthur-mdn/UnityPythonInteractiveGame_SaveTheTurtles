@@ -4,7 +4,7 @@ using UnityEngine;
 public class TurtleSpawner : MonoBehaviour
 {
     public GameObject turtlePrefab;
-    public GameObject particlePrefab; // Référence au ParticlePrefab
+    public GameObject particlePrefab;
     public Transform[] spawnPoints;
     public float spawnInterval = 2f; // Intervalle entre chaque apparition de tortue
     public float particleDuration = 1f; // Durée d'exécution du système de particules avant de faire apparaître la tortue
