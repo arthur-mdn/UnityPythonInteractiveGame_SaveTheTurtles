@@ -86,6 +86,12 @@ public class CalibrationManager : MonoBehaviour
             if (index >= maxHands) break;
 
             Vector3 targetPos = ConvertToPlanePosition(pos[0].AsFloat, pos[1].AsFloat);
+
+            if (GameGameManager.Instance != null && GameGameManager.Instance.Gameover)
+            {
+                targetPos.y = 0.76f;
+            }
+
             if (!wristInstances[index].activeSelf) wristInstances[index].SetActive(true);
 
             float distance = Vector3.Distance(wristInstances[index].transform.position, targetPos);
