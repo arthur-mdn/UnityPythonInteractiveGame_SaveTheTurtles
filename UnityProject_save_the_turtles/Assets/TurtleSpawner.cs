@@ -16,7 +16,7 @@ public class TurtleSpawner : MonoBehaviour
 
     private IEnumerator SpawnTurtles()
     {
-        while (!GameGameManager.Instance.Gameover) // Continuer tant que le jeu n'est pas fini
+        while (!GameManager.Instance.Gameover) // Continuer tant que le jeu n'est pas fini
         {
             yield return new WaitForSeconds(spawnInterval); // Attendre un intervalle avant de faire apparaître la prochaine tortue
 
@@ -32,7 +32,7 @@ public class TurtleSpawner : MonoBehaviour
             yield return new WaitForSeconds(particleDuration);
 
             // Vérifier à nouveau si le jeu est fini avant de faire apparaître une tortue
-            if (!GameGameManager.Instance.Gameover)
+            if (!GameManager.Instance.Gameover)
             {
                 Instantiate(turtlePrefab, spawnPoint.position, spawnPoint.rotation);
             }

@@ -22,7 +22,7 @@ public class LifeManager : MonoBehaviour
     }
 
     private void Start() {
-        InitializeHearts(GameGameManager.Instance.GetLives());
+        InitializeHearts(GameManager.Instance.GetLives());
     }
 
     private void InitializeHearts(int maxLives)

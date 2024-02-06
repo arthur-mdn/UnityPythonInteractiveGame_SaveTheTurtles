@@ -87,7 +87,7 @@ public class CalibrationManager : MonoBehaviour
 
             Vector3 targetPos = ConvertToPlanePosition(pos[0].AsFloat, pos[1].AsFloat);
 
-            if (GameGameManager.Instance != null && GameGameManager.Instance.Gameover)
+            if (GameManager.Instance != null && GameManager.Instance.Gameover)
             {
                 targetPos.y = 0.76f;
             }

@@ -7,9 +7,9 @@ public class ScoreDisplay : MonoBehaviour
 
     private void Update()
     {
-        if (GameGameManager.Instance != null)
+        if (GameManager.Instance != null)
         {
-            scoreText.text = "Score: " + GameGameManager.Instance.GetScore();
+            scoreText.text = "Score: " + GameManager.Instance.GetScore();
         }
     }
 }

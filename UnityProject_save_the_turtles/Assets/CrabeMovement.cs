@@ -7,7 +7,7 @@ public class CrabeMovement : MonoBehaviour
 
     void Update()
     {
-        if (GameGameManager.Instance.Gameover) return;
+        if (GameManager.Instance.Gameover) return;
         FindClosestTurtle();
         if (targetTurtle != null)
         {
@@ -58,10 +58,10 @@ public class CrabeMovement : MonoBehaviour
 
 
             // Mettre à jour le score via le GameManager, si disponible
-            if (GameGameManager.Instance != null)
+            if (GameManager.Instance != null)
             {
-                //GameGameManager.Instance.AddScore(-1); // Retirer un point pour la destruction d'une tortue
-                GameGameManager.Instance.LoseLife();
+                //GameManager.Instance.AddScore(-1); // Retirer un point pour la destruction d'une tortue
+                GameManager.Instance.LoseLife();
             }
 
             // Chercher la prochaine tortue la plus proche
