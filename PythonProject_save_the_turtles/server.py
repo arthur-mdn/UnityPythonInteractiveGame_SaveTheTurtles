@@ -390,7 +390,15 @@ def listen_for_data():
             data_json = json.loads(data)
             print(data_json)
             if(data_json['message'] != None):
-                if data_json['message'] == "start_calibration":
+                if data_json['message'] == "test_connection":
+                    message = {
+                        "sender": "python",
+                        "message": "connection_ok",
+                        "data": ""
+                    }
+                    json_message = json.dumps(message)
+                    sock.SendData(json_message)
+                elif data_json['message'] == "start_calibration":
                     start_calibration()
                 elif data_json['message'] == "start_yolo_hands_detection":
                     start_yolo_hands_detection()

@@ -24,7 +24,20 @@ public class UdpConnectionManager : MonoBehaviour
     private Thread receiveThread;
     
     private ConcurrentQueue<string> receivedMessages = new ConcurrentQueue<string>();
-    
+
+    private readonly Queue<Action> actionsToExecuteOnMainThread = new Queue<Action>();
+
+    public void EnqueueMainThreadAction(Action action)
+    {
+        lock (actionsToExecuteOnMainThread)
+        {
+            actionsToExecuteOnMainThread.Enqueue(action);
+        }
+    }
+
+    public GameObject connectingUI;
+    public GameObject connectErrorUI;
+    public GameObject connectOkUI;
 
     void Awake()
     {
@@ -44,13 +57,48 @@ public class UdpConnectionManager : MonoBehaviour
         }
     }
 
-    void Update()
+    void Start()
     {
-        while (receivedMessages.TryDequeue(out string message))
-        {
-            ProcessInput(message); 
-        }
+        if (!connectingUI) connectingUI = GameObject.Find("Connecting");
+        if (!connectErrorUI) connectErrorUI = GameObject.Find("ConnectError");
+        if (!connectOkUI) connectOkUI = GameObject.Find("ConnectOk");
+
+        // Assurez-vous de désactiver ces UIs au démarrage
+        if (connectingUI) connectingUI.SetActive(true);
+        if (connectErrorUI) connectErrorUI.SetActive(false);
+        if (connectOkUI) connectOkUI.SetActive(false);
+
+        SendData("test_connection");
     }
+
+    private void UpdateConnectionState(string state)
+    {
+        if (connectingUI) connectingUI.SetActive(state == "Connecting");
+        if (connectErrorUI) connectErrorUI.SetActive(state == "ConnectError");
+        if (connectOkUI) connectOkUI.SetActive(state == "ConnectOk");
+    }
+
+
+
+   void Update()
+   {
+       // Exécutez toutes les actions en attente sur le thread principal
+       while (actionsToExecuteOnMainThread.Count > 0)
+       {
+           Action action;
+           lock (actionsToExecuteOnMainThread)
+           {
+               action = actionsToExecuteOnMainThread.Dequeue();
+           }
+           action?.Invoke();
+       }
+
+       // Traitement des messages reçus
+       while (receivedMessages.TryDequeue(out string message))
+       {
+           ProcessInput(message);
+       }
+   }
     
     public void SendData(string message)
     {
@@ -69,12 +117,19 @@ public class UdpConnectionManager : MonoBehaviour
 
     private void ReceiveData()
     {
-        while (true)
+        try
         {
-            IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
-            byte[] data = client.Receive(ref anyIP);
-            string text = Encoding.UTF8.GetString(data);
-            receivedMessages.Enqueue(text);
+            while (true)
+            {
+                IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
+                byte[] data = client.Receive(ref anyIP);
+                string text = Encoding.UTF8.GetString(data);
+                receivedMessages.Enqueue(text);
+            }
+        }
+        catch (Exception e)
+        {
+            EnqueueMainThreadAction(() => UpdateConnectionState("ConnectError"));
         }
     }
 
@@ -83,14 +138,17 @@ public class UdpConnectionManager : MonoBehaviour
         var node = JSON.Parse(json);
         string messageType = node["message"];
 //        Debug.Log(messageType);
-        if (messageType == "calibration_success")
+        if (messageType == "connection_ok")
+        {
+            EnqueueMainThreadAction(() => UpdateConnectionState("ConnectOk"));
+        }
+        else if (messageType == "calibration_success")
         {
             SendData("start_detection");
         }
         else if (messageType == "hands_positions")
         {
             var positions = node["data"].AsArray;
-//            Debug.Log(positions);
             CalibrationManager.Instance.UpdateWristPositions(positions);
         }
         else if (messageType == "change_scene_to_calibrate")
