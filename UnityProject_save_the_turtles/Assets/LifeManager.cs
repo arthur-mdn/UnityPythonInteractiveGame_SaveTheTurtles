@@ -34,9 +34,9 @@ public class LifeManager : MonoBehaviour
 
         for (int i = 0; i < maxLives; i++)
         {
-            heartsFull[i] = Instantiate(heartFullPrefab, heartsContainer.position + Vector3.right * i * 0.5f, rotation, heartsContainer);
+            heartsFull[i] = Instantiate(heartFullPrefab, heartsContainer.position + Vector3.right * i * 0.4f, rotation, heartsContainer);
 
-            heartsEmpty[i] = Instantiate(heartEmptyPrefab, heartsContainer.position + Vector3.right * i * 0.5f, rotation, heartsContainer);
+            heartsEmpty[i] = Instantiate(heartEmptyPrefab, heartsContainer.position + Vector3.right * i * 0.4f, rotation, heartsContainer);
             heartsEmpty[i].SetActive(false);
         }
     }
