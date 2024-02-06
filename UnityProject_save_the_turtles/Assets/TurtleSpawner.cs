@@ -16,7 +16,7 @@ public class TurtleSpawner : MonoBehaviour
 
     private IEnumerator SpawnTurtles()
     {
-        while (!GameGameManager.Instance.Gameover) // Boucle infinie pour continuer à faire apparaître des tortues
+        while (!GameGameManager.Instance.Gameover) // Continuer tant que le jeu n'est pas fini
         {
             yield return new WaitForSeconds(spawnInterval); // Attendre un intervalle avant de faire apparaître la prochaine tortue
 
@@ -27,16 +27,17 @@ public class TurtleSpawner : MonoBehaviour
             // Faire apparaître le ParticlePrefab à ce point
             GameObject particleInstance = Instantiate(particlePrefab, spawnPoint.position, spawnPoint.rotation);
             particleInstance.transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0)); // Oriente les particules vers le haut
+
             // Attendre que le ParticleSystem se termine
             yield return new WaitForSeconds(particleDuration);
 
-            // Faire apparaître une tortue à ce point
-           if (!GameGameManager.Instance.Gameover)
-           {
-               Instantiate(turtlePrefab, spawnPoint.position, spawnPoint.rotation);
-           }
+            // Vérifier à nouveau si le jeu est fini avant de faire apparaître une tortue
+            if (!GameGameManager.Instance.Gameover)
+            {
+                Instantiate(turtlePrefab, spawnPoint.position, spawnPoint.rotation);
+            }
 
-            // Optionnel : désactiver ou détruire le ParticlePrefab
+            // Détruire le ParticlePrefab
             Destroy(particleInstance);
         }
     }

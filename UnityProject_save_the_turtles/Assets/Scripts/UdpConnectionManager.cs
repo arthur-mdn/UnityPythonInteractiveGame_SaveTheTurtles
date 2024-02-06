@@ -80,7 +80,7 @@ public class UdpConnectionManager : MonoBehaviour
     {
         var node = JSON.Parse(json);
         string messageType = node["message"];
-        Debug.Log(messageType);
+//        Debug.Log(messageType);
         if (messageType == "calibration_success")
         {
             SendData("start_detection");
@@ -88,7 +88,7 @@ public class UdpConnectionManager : MonoBehaviour
         else if (messageType == "hands_positions")
         {
             var positions = node["data"].AsArray;
-            Debug.Log(positions);
+//            Debug.Log(positions);
             CalibrationManager.Instance.UpdateWristPositions(positions);
         }
         else if (messageType == "change_scene_to_calibrate")

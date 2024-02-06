@@ -8,6 +8,10 @@ TagManager:
   - CalibrationBall
   - Turtle
   - Wrist
+  - RestartButton
+  - GameOverScreen
+  - TurtleSpawnPoint
+  - CrabSpawnPoint
   layers:
   - Default
   - TransparentFX

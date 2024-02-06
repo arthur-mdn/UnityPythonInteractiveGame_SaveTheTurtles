@@ -20,31 +20,42 @@ public class CalibrationManager : MonoBehaviour
     public static CalibrationManager Instance { get; private set; }
     public bool invertXAxis = true; // Inverser l'axe X du plan (pour jouer direct via webcam, sans projection)
 
-    public float slowLerpSpeed = 5f; // Vitesse de Lerp lente
+    public float slowLerpSpeed = 150f; // Vitesse de Lerp lente
     public float fastLerpSpeed = 300f; // Vitesse de Lerp rapide
     public float distanceThreshold = 0.11f; // Seuil de distance pour basculer entre Lerp lent et rapide
+    private Rigidbody[] wristRigidbodies;
 
+   void Awake()
+  {
+      if (Instance == null)
+      {
+          Instance = this;
+          wristInstances = new GameObject[maxHands];
+          wristRigidbodies = new Rigidbody[maxHands];
+          Vector3[] initialPositions = new Vector3[] { new Vector3(4, 0.5f, 0), new Vector3(-4, 0.5f, 0) };
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            wristInstances = new GameObject[maxHands];
-            for (int i = 0; i < maxHands; i++)
-            {
-                wristInstances[i] = Instantiate(wristPrefab, Vector3.zero, Quaternion.identity);
-                wristInstances[i].SetActive(false);
-            }
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+          for (int i = 0; i < maxHands; i++)
+          {
+              wristInstances[i] = Instantiate(wristPrefab, initialPositions[i], Quaternion.identity);
+              wristRigidbodies[i] = wristInstances[i].GetComponent<Rigidbody>();
+              wristInstances[i].SetActive(false);
+          }
+      }
+      else
+      {
+          Destroy(gameObject);
+      }
+  }
 
     void Start()
     {
+
+        planeGameObject = GameObject.Find("InitialPlane");
+
+        if (planeGameObject == null)
+        {
+            Debug.LogError("Plane GameObject not found in scene!");
+        }
         Mesh mesh = planeGameObject.GetComponent<MeshFilter>().mesh;
         float planeWidth = mesh.bounds.size.x * planeGameObject.transform.localScale.x;
         float planeHeight = mesh.bounds.size.z * planeGameObject.transform.localScale.z;
@@ -71,21 +82,20 @@ public class CalibrationManager : MonoBehaviour
     {
         int index = 0;
         foreach (JSONNode pos in handPositions)
-            {
-                if (index >= maxHands) break; // Ne pas dépasser le nombre max de mains gérées
+        {
+            if (index >= maxHands) break;
 
-                Vector3 targetPos = ConvertToPlanePosition(pos[0].AsFloat, pos[1].AsFloat);
-                if (!wristInstances[index].activeSelf) wristInstances[index].SetActive(true);
+            Vector3 targetPos = ConvertToPlanePosition(pos[0].AsFloat, pos[1].AsFloat);
+            if (!wristInstances[index].activeSelf) wristInstances[index].SetActive(true);
 
-                float distance = Vector3.Distance(wristInstances[index].transform.position, targetPos);
-                float lerpSpeed = distance > distanceThreshold ? fastLerpSpeed : slowLerpSpeed;
+            float distance = Vector3.Distance(wristInstances[index].transform.position, targetPos);
+            float lerpFactor = distance > distanceThreshold ? fastLerpSpeed : slowLerpSpeed;
+            Vector3 newPosition = Vector3.Lerp(wristInstances[index].transform.position, targetPos, lerpFactor * Time.deltaTime);
 
-                wristInstances[index].transform.position = Vector3.Lerp(wristInstances[index].transform.position, targetPos, lerpSpeed * Time.deltaTime);
+            wristRigidbodies[index].MovePosition(newPosition);
 
-                ResetCollider(wristInstances[index]);
-
-                index++;
-            }
+            index++;
+        }
 
         // Désactiver les GameObjects inutilisés
         for (int i = index; i < maxHands; i++)
@@ -94,8 +104,15 @@ public class CalibrationManager : MonoBehaviour
         }
     }
 
+
     private Vector3 ConvertToPlanePosition(float x, float y)
     {
+        planeGameObject = GameObject.Find("InitialPlane");
+
+        if (planeGameObject == null)
+        {
+            Debug.LogError("Plane GameObject not found in scene!");
+        }
         Mesh mesh = planeGameObject.GetComponent<MeshFilter>().mesh;
         float planeWidth = mesh.bounds.size.x * planeGameObject.transform.localScale.x;
         float planeHeight = mesh.bounds.size.z * planeGameObject.transform.localScale.z;
