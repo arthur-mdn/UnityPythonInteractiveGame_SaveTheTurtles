@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+//            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -19,29 +19,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        StartYoloDetection();
-    }
-
-    public void StartYoloDetection()
-    {
-    if (UdpConnectionManager.Instance != null)
-        {
-            UdpConnectionManager.Instance.SendData("start_yolo_hands_detection");
-        }
-
-    }
-
-    public void ChangeToCalibrationScene()
-    {
-        SceneManager.LoadScene("BallGame");
-    }
-
-    public void LoadGameScene()
-    {
-        SceneManager.LoadScene("GameScene");
-    }
 
     public void AddScore(int amount)
     {

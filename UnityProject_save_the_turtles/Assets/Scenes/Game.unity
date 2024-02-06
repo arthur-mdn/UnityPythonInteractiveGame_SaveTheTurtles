@@ -972,6 +972,56 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 741288175}
   m_Mesh: {fileID: 6124436484349841348, guid: 7b5a9e0ec5d45fb4894651f21695314c, type: 3}
+--- !u!1 &796201565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 796201567}
+  - component: {fileID: 796201566}
+  m_Layer: 0
+  m_Name: CalibrationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &796201566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796201565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3155f96050f4344a91db95868cfb22d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wristPrefab: {fileID: 4934855905958903879, guid: c2ccf2e1bd480354faa0501fdfd0703e, type: 3}
+  planeGameObject: {fileID: 1851064394}
+  invertXAxis: 0
+  slowLerpSpeed: 150
+  fastLerpSpeed: 300
+  distanceThreshold: 0.11
+--- !u!4 &796201567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796201565}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.2342644, y: -3.0626664, z: -2.5993314}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &910941089
 GameObject:
   m_ObjectHideFlags: 0
@@ -3108,10 +3158,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1679015824}
-  - component: {fileID: 1679015823}
   - component: {fileID: 1679015825}
   - component: {fileID: 1679015827}
   - component: {fileID: 1679015828}
+  - component: {fileID: 1679015829}
   m_Layer: 0
   m_Name: GameGameManager
   m_TagString: Untagged
@@ -3119,24 +3169,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1679015823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1679015822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3155f96050f4344a91db95868cfb22d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wristPrefab: {fileID: 4934855905958903879, guid: c2ccf2e1bd480354faa0501fdfd0703e, type: 3}
-  planeGameObject: {fileID: 1851064394}
-  invertXAxis: 0
-  slowLerpSpeed: 150
-  fastLerpSpeed: 300
-  distanceThreshold: 0.11
 --- !u!4 &1679015824
 Transform:
   m_ObjectHideFlags: 0
@@ -3210,6 +3242,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverUI: {fileID: 1086813977}
+--- !u!114 &1679015829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1679015822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7102fcda5442f0c40ab433ba6e5bc9a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1722794717
 GameObject:
   m_ObjectHideFlags: 0
@@ -4070,3 +4114,4 @@ SceneRoots:
   - {fileID: 1624408107}
   - {fileID: 985423671}
   - {fileID: 910941091}
+  - {fileID: 796201567}

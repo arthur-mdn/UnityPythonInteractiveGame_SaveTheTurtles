@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Threading;
 using SimpleJSON;
 using System.Collections.Concurrent;
+using UnityEngine.SceneManagement;
 
 public class UdpConnectionManager : MonoBehaviour
 {
@@ -93,7 +94,7 @@ public class UdpConnectionManager : MonoBehaviour
         }
         else if (messageType == "change_scene_to_calibrate")
         {
-            GameManager.Instance.ChangeToCalibrationScene();
+            SceneManager.LoadScene("BallGame");
         }
     }
 }
