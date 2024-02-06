@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -50,7 +51,14 @@ public class GameManager : MonoBehaviour
              Debug.Log("Game Over!");
              Gameover = true;
              gameOverUI.SetActive(true);
+             StartCoroutine(WaitAndLoadHomeScreen(30)); // rediriger vers la page d'accueil après 30 secondes
              //Time.timeScale = 0;
          }
+     }
+
+     private IEnumerator WaitAndLoadHomeScreen(float delay)
+     {
+        yield return new WaitForSeconds(delay);
+        UdpConnectionManager.Instance.SendData("stop_game");
      }
 }

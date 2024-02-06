@@ -63,6 +63,7 @@ public class UdpConnectionManager : MonoBehaviour
 
         string json = JsonUtility.ToJson(socketMessage);
         byte[] data = Encoding.UTF8.GetBytes(json);
+        Debug.Log("Sending: " + json);
         client.Send(data, data.Length, remoteEndPoint);
     }
 
@@ -73,7 +74,7 @@ public class UdpConnectionManager : MonoBehaviour
             IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
             byte[] data = client.Receive(ref anyIP);
             string text = Encoding.UTF8.GetString(data);
-            receivedMessages.Enqueue(text); // Mettez les données reçues dans la file d'attente
+            receivedMessages.Enqueue(text);
         }
     }
 
@@ -95,6 +96,15 @@ public class UdpConnectionManager : MonoBehaviour
         else if (messageType == "change_scene_to_calibrate")
         {
             SceneManager.LoadScene("BallGame");
+        }
+        else if (messageType == "game_stopped")
+        {
+            SceneManager.LoadScene("HomeScreen");
+        }
+        else if (messageType == "start_new_game")
+        {
+            SendData("start_detection");
+            SceneManager.LoadScene("Game");
         }
     }
 }

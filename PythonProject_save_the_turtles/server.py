@@ -30,7 +30,7 @@ def are_hands_in_air(keypoints, frame_height):
 
     return left_hand_y < left_eye_y and right_hand_y < right_eye_y
 
-def start_yolo_hands_detection():
+def start_yolo_hands_detection(to_launch_new_game=False):
     global model
     cap = cv2.VideoCapture(webcam_index, webcam_backend)
     hands_in_air_counter = 0
@@ -52,10 +52,16 @@ def start_yolo_hands_detection():
 
         if hands_in_air_counter >= 10:
             print("Mains en l'air détectées")
-            message = {
-                "sender": "python",
-                "message": "change_scene_to_calibrate"
-            }
+            if to_launch_new_game:
+                message = {
+                    "sender": "python",
+                    "message": "start_new_game"
+                }
+            else:
+                message = {
+                    "sender": "python",
+                    "message": "change_scene_to_calibrate"
+                }
             json_message = json.dumps(message)
             sock.SendData(json_message)
             break
@@ -198,6 +204,21 @@ def transform_perspective(points, src_coords, dst_coords):
     return transformed_points.reshape(-1, 2)
 
 
+def handle_incoming_message(data):
+    global capture_running
+    data_json = json.loads(data)
+
+    if data_json['message'] == 'stop_game':
+        print("Arrêt du jeu demandé.")
+        capture_running = False
+        message = {
+            "sender": "python",
+            "message": "game_stopped",
+            "data": True
+        }
+        json_message = json.dumps(message)
+        sock.SendData(json_message)
+
 def capture_and_process_player_continuous():
     global capture_running, calibration_points, video_source, show_live_transformed_calibrated_positions
 
@@ -222,6 +243,12 @@ def capture_and_process_player_continuous():
 
         if not success:
             print("Failed to read frame from video")
+            break
+        data = sock.ReadReceivedData()
+        if data:
+            handle_incoming_message(data)
+        if not capture_running:
+            print("Capture stopped")
             break
 
         results = model(frame)
@@ -254,7 +281,7 @@ def capture_and_process_player_continuous():
                     hand_positions.append(right_hand)
                     cv2.circle(frame, (int(right_hand[0]), int(right_hand[1])), 10, (0, 0, 255), -1)
 
-        if calibration_points is not None and len(hand_positions) > 0:
+        if calibration_points is not None and len(hand_positions) > 0 and capture_running:
             if len(hand_positions) > 0:
                 transformed_hand_positions = transform_perspective(hand_positions, src_coords, dst_coords)
             else:
@@ -316,6 +343,16 @@ def start_calibration():
     print("Calibration process started...")
     global is_calibrated, calibration_points, video_source
 
+    if is_calibrated and calibration_points is not None:
+        print("Already calibrated")
+        message = {
+            "sender": "python",
+            "message": "calibration_success",
+            "data": [point.tolist() for point in calibration_points]
+        }
+        json_message = json.dumps(message)
+        sock.SendData(json_message)
+        return
     if video_source == "webcam":
         points = capture_and_process_image()  # Utiliser la webcam pour la capture
     elif video_source == "file":
@@ -357,14 +394,11 @@ def listen_for_data():
                     start_calibration()
                 elif data_json['message'] == "start_yolo_hands_detection":
                     start_yolo_hands_detection()
+                elif data_json['message'] == "start_yolo_hands_detection_to_launch_new_game":
+                    start_yolo_hands_detection(True)
                 elif data_json['message'] == "start_detection" and is_calibrated:
                     capture_running = True
                     capture_and_process_player_continuous()
-                elif data_json['message'] == "stop_detection":
-                    capture_running = False
-                elif data_json['message'] == "stop_game":
-                    capture_running = False
-                    print("stop game")
                 elif data_json['message'] == "change_source":
                     new_source = data_json['data']
                     change_video_source(new_source)
