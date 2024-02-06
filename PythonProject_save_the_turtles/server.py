@@ -122,7 +122,7 @@ def auto_detect_edges(image):
 
     return marker_positions
 
-def capture_and_process_image(tries=10):
+def capture_and_process_image(tries=20):
     global show_calibrate_result
     for _ in range(tries):
         # Ouvrir la caméra
