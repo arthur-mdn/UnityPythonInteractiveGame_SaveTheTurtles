@@ -20,7 +20,7 @@ public class CalibrationManager : MonoBehaviour
     public static CalibrationManager Instance { get; private set; }
     public bool invertXAxis = true; // Inverser l'axe X du plan (pour jouer direct via webcam, sans projection)
 
-    public float slowLerpSpeed = 150f; // Vitesse de Lerp lente
+    public float slowLerpSpeed = 5f; // Vitesse de Lerp lente
     public float fastLerpSpeed = 300f; // Vitesse de Lerp rapide
     public float distanceThreshold = 0.11f; // Seuil de distance pour basculer entre Lerp lent et rapide
     private Rigidbody[] wristRigidbodies;

@@ -602,7 +602,7 @@ MonoBehaviour:
   wristPrefab: {fileID: 4934855905958903879, guid: c2ccf2e1bd480354faa0501fdfd0703e, type: 3}
   planeGameObject: {fileID: 1964773215}
   invertXAxis: 0
-  slowLerpSpeed: 150
+  slowLerpSpeed: 5
   fastLerpSpeed: 300
   distanceThreshold: 0.11
 --- !u!4 &728667658
