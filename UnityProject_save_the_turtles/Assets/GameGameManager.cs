@@ -5,7 +5,7 @@ public class GameGameManager : MonoBehaviour
 {
     public static GameGameManager Instance { get; private set; }
     public int Score { get; private set; } = 0;
-    public int Lives { get; private set; } = 1;
+    public int Lives { get; private set; } = 5;
     public bool Gameover { get; private set; } = false;
     public GameObject gameOverUI;
 
