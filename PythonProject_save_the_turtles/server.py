@@ -252,6 +252,12 @@ def capture_and_process_player_continuous():
         if not success:
             print("Failed to read frame from video")
             break
+        data = sock.ReadReceivedData()
+        if data:
+            handle_incoming_message(data)
+        if not capture_running:
+            print("Capture stopped")
+            break
 
         transformed_hand_positions = []
 
