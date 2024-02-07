@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class CrabeMovement : MonoBehaviour
 {
@@ -68,9 +69,31 @@ public class CrabeMovement : MonoBehaviour
             FindClosestTurtle();
         }
         // si c'est Wrist, détruire crabe
-        if (other.gameObject.CompareTag("Wrist"))
+        else if (other.gameObject.CompareTag("Wrist"))
         {
-            Destroy(gameObject);
+            Animator wristAnimator = other.gameObject.GetComponent<Animator>();
+            if (wristAnimator != null)
+            {
+                wristAnimator.SetTrigger("Attack");
+            }
+
+            // Geler le crabe et ignorer les collisions avec le poignet
+            Rigidbody crabRigidbody = GetComponent<Rigidbody>();
+            crabRigidbody.isKinematic = true; // Geler le crabe
+            Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
+
+            StartCoroutine(DestroyCrab(gameObject, crabRigidbody, other.collider));
         }
+    }
+
+    IEnumerator DestroyCrab(GameObject crab, Rigidbody crabRigidbody, Collider wristCollider)
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        // Réactiver la physique et les collisions
+        crabRigidbody.isKinematic = false;
+        Physics.IgnoreCollision(wristCollider, crab.GetComponent<Collider>(), false);
+
+        Destroy(crab);
     }
 }

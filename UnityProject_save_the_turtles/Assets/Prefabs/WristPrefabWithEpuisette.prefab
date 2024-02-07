@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7281855850748432402}
   - component: {fileID: 2064601575300129434}
   - component: {fileID: 685243562270210380}
+  - component: {fileID: 2635566771649299745}
   m_Layer: 0
   m_Name: WristPrefabWithEpuisette
   m_TagString: Wrist
@@ -54,8 +55,8 @@ BoxCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.0523385, y: 1.2264341, z: 1.5400376}
-  m_Center: {x: -0.02998799, y: -0.033216774, z: 1.6511471}
+  m_Size: {x: 0.955081, y: 1.2264341, z: 1.2064936}
+  m_Center: {x: -0.05262494, y: -0.033216774, z: 1.6872625}
 --- !u!54 &685243562270210380
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -83,6 +84,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!95 &2635566771649299745
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4934855905958903879}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 69cb691e5bde3f94b822081f5adfecfb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5158033052853181988
 GameObject:
   m_ObjectHideFlags: 0
