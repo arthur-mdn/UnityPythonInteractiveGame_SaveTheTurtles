@@ -145,6 +145,11 @@ public class UdpConnectionManager : MonoBehaviour
         else if (messageType == "calibration_success")
         {
             SendData("start_detection");
+            EnqueueMainThreadAction(ShowCalibrateOkTemporarily);
+        }
+        else if (messageType == "calibration_failed")
+        {
+            EnqueueMainThreadAction(ShowCalibrateFailedTemporarily);
         }
         else if (messageType == "hands_positions")
         {
@@ -163,6 +168,33 @@ public class UdpConnectionManager : MonoBehaviour
         {
             SendData("start_detection");
             SceneManager.LoadScene("Game");
+        }
+    }
+
+    void ShowCalibrateOkTemporarily()
+    {
+        ShowStartCalibration showStartCalibration = FindObjectOfType<ShowStartCalibration>();
+
+        if (showStartCalibration != null)
+        {
+            showStartCalibration.StartCalibrateOkDisplay();
+        }
+        else
+        {
+            Debug.LogError("ShowStartCalibration script non trouvé dans la scène.");
+        }
+    }
+    void ShowCalibrateFailedTemporarily()
+    {
+        ShowStartCalibration showStartCalibration = FindObjectOfType<ShowStartCalibration>();
+
+        if (showStartCalibration != null)
+        {
+            showStartCalibration.StartCalibrateFailedDisplay();
+        }
+        else
+        {
+            Debug.LogError("ShowStartCalibration script non trouvé dans la scène.");
         }
     }
 }

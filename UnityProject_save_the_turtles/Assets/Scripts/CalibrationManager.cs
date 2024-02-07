@@ -66,6 +66,22 @@ public class CalibrationManager : MonoBehaviour
         {
             UdpConnectionManager.Instance.SendData("start_calibration");
         }
+        StartCoroutine(DisableCalibrateStartAfterDelay(8f));
+    }
+
+    IEnumerator DisableCalibrateStartAfterDelay(float delay)
+    {
+        GameObject calibrateStartObject = GameObject.Find("CalibrateStart");
+
+        if (calibrateStartObject != null)
+        {
+            yield return new WaitForSeconds(delay);
+            calibrateStartObject.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("CalibrateStart object not found, coroutine will not proceed.");
+        }
     }
 
     private void ResetCollider(GameObject wristInstance)

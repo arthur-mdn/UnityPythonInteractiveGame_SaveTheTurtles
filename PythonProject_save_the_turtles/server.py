@@ -138,7 +138,7 @@ def auto_detect_edges(image):
 
     return marker_positions
 
-def capture_and_process_image(tries=20):
+def capture_and_process_image(tries=30):
     global show_calibrate_result
     for _ in range(tries):
         # Ouvrir la caméra
@@ -171,10 +171,17 @@ def capture_and_process_image(tries=20):
 
     # Si la calibration a échoué après toutes les tentatives
     print("Calibration failed after {} tries".format(tries))
+    message = {
+        "sender": "python",
+        "message": "calibration_failed",
+        "data": ""
+    }
+    json_message = json.dumps(message)
+    sock.SendData(json_message)
     return None
 
 
-def capture_and_process_image_from_video(video_path, tries=10):
+def capture_and_process_image_from_video(video_path, tries=30):
     # Ouvrir le fichier vidéo
     cap = cv2.VideoCapture(video_path)
 
