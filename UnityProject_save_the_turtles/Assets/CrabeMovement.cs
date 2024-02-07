@@ -5,10 +5,22 @@ public class CrabeMovement : MonoBehaviour
 {
     public float speed = 1f;
     private GameObject targetTurtle;
+    private Animator animator;
+    private bool isDead = false;
+
+    void Start()
+    {
+        animator = GetComponentInChildren<Animator>();
+        if (animator == null)
+        {
+            Debug.Log("Aucun Animator trouvé dans les enfants de ce GameObject");
+        }
+    }
 
     void Update()
     {
         if (GameManager.Instance.Gameover) return;
+        if (isDead) return;
         FindClosestTurtle();
         if (targetTurtle != null)
         {
@@ -71,29 +83,23 @@ public class CrabeMovement : MonoBehaviour
         // si c'est Wrist, détruire crabe
         else if (other.gameObject.CompareTag("Wrist"))
         {
+            isDead = true;
             Animator wristAnimator = other.gameObject.GetComponent<Animator>();
             if (wristAnimator != null)
             {
                 wristAnimator.SetTrigger("Attack");
             }
 
-            // Geler le crabe et ignorer les collisions avec le poignet
-            Rigidbody crabRigidbody = GetComponent<Rigidbody>();
-            crabRigidbody.isKinematic = true; // Geler le crabe
-            Physics.IgnoreCollision(other.collider, GetComponent<Collider>());
-
-            StartCoroutine(DestroyCrab(gameObject, crabRigidbody, other.collider));
+            if (animator != null)
+            {
+                Debug.Log("Crabe mort");
+                animator.SetTrigger("Death");
+            }else{
+                Debug.Log("Crabe mort mais pas d'animator");
+            }
+            Destroy(gameObject);
         }
     }
 
-    IEnumerator DestroyCrab(GameObject crab, Rigidbody crabRigidbody, Collider wristCollider)
-    {
-        yield return new WaitForSeconds(0.2f);
 
-        // Réactiver la physique et les collisions
-        crabRigidbody.isKinematic = false;
-        Physics.IgnoreCollision(wristCollider, crab.GetComponent<Collider>(), false);
-
-        Destroy(crab);
-    }
 }
