@@ -16,6 +16,22 @@ webcam_backend = cv2.CAP_DSHOW # cv2.CAP_DSHOW pour les webcams Windows, Utilise
 video_path = "Elements/wall_vid.mp4"
 show_calibrate_result = False
 show_live_transformed_calibrated_positions = True
+max_positions = 10  # Nombre maximal de positions à stocker
+left_hand_positions = []
+right_hand_positions = []
+
+def add_position(hand_positions, new_position):
+    hand_positions.append(new_position)
+    if len(hand_positions) > max_positions:
+        hand_positions.pop(0)  # Retirer la position la plus ancienne
+
+def get_smoothed_position(hand_positions):
+    if hand_positions:
+        # Calculer la moyenne des positions stockées
+        x_avg = sum(pos[0] for pos in hand_positions) / len(hand_positions)
+        y_avg = sum(pos[1] for pos in hand_positions) / len(hand_positions)
+        return [x_avg, y_avg]
+    return None
 
 def are_hands_in_air(keypoints, frame_height):
     if not keypoints[0]:
@@ -226,9 +242,8 @@ def capture_and_process_player_continuous():
         print("Calibration is not yet done.")
         return
 
-    # Les coordonnées sources sont les points de calibration
     src_coords = np.array(calibration_points, dtype="float32")
-    dst_coords = np.array([[0, 0], [640, 0], [640, 360], [0, 360]], dtype="float32")  # Exemple de dimensions 16/9
+    dst_coords = np.array([[0, 0], [640, 0], [640, 360], [0, 360]], dtype="float32")
 
     if video_source == "webcam":
         cap = cv2.VideoCapture(webcam_index, webcam_backend)
@@ -240,79 +255,45 @@ def capture_and_process_player_continuous():
 
     while capture_running:
         success, frame = cap.read()
-
         if not success:
             print("Failed to read frame from video")
             break
-        data = sock.ReadReceivedData()
-        if data:
-            handle_incoming_message(data)
-        if not capture_running:
-            print("Capture stopped")
-            break
+
+        transformed_hand_positions = []
 
         results = model(frame)
         keypoints = results[0].keypoints.xy.tolist()
 
-        if show_live_transformed_calibrated_positions:
-            M = cv2.getPerspectiveTransform(src_coords, dst_coords)
-            transformed_frame = cv2.warpPerspective(frame, M, (640, 360))
-            for person in keypoints:
-                for point in person:
-                    transformed_point = transform_perspective([point], src_coords, dst_coords)[0]
-                    cv2.circle(transformed_frame, (int(transformed_point[0]), int(transformed_point[1])), 5, (0, 255, 0), -1)
-
-            cv2.imshow("Transformed View", transformed_frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-
         hand_positions = []
-        transformed_hand_positions = []
         for person in keypoints:
             if len(person) > 0:
                 left_hand = person[9]  # left_wrist
                 right_hand = person[10]  # right_wrist
-                # Vérifier si les coordonnées des mains sont valides avant de les ajouter
                 if 0 < left_hand[0] < frame.shape[1] and 0 < left_hand[1] < frame.shape[0]:
-                    hand_positions.append(left_hand)
-                    cv2.circle(frame, (int(left_hand[0]), int(left_hand[1])), 10, (0, 255, 0), -1)
-
+                    add_position(left_hand_positions, left_hand)
                 if 0 < right_hand[0] < frame.shape[1] and 0 < right_hand[1] < frame.shape[0]:
-                    hand_positions.append(right_hand)
-                    cv2.circle(frame, (int(right_hand[0]), int(right_hand[1])), 10, (0, 0, 255), -1)
+                    add_position(right_hand_positions, right_hand)
 
-        if calibration_points is not None and len(hand_positions) > 0 and capture_running:
-            if len(hand_positions) > 0:
-                transformed_hand_positions = transform_perspective(hand_positions, src_coords, dst_coords)
-            else:
-                transformed_hand_positions = []
+        smoothed_left_hand = get_smoothed_position(left_hand_positions)
+        smoothed_right_hand = get_smoothed_position(right_hand_positions)
 
-            max_width = 640  # Largeur maximale
-            max_height = 360  # Hauteur maximale
+        if smoothed_left_hand and smoothed_right_hand:
+            smoothed_positions = [smoothed_left_hand, smoothed_right_hand]
+            transformed_hand_positions = transform_perspective(smoothed_positions, src_coords, dst_coords)
 
-            # Envoi des positions des mains transformées à Unity
             message = {
                 "sender": "python",
                 "message": "hands_positions",
-                "data": [[pos[0] / max_width, pos[1] / max_height] for pos in transformed_hand_positions]
+                "data": [[pos[0] / 640, pos[1] / 360] for pos in transformed_hand_positions]
             }
-            print([[pos[0] / max_width, pos[1] / max_height] for pos in transformed_hand_positions])
             json_message = json.dumps(message)
-            print("Sending JSON: ", json_message)
             sock.SendData(json_message)
-            if show_live_transformed_calibrated_positions:
-                # Dessiner les mains calibrées sur une nouvelle image
-                calib_frame = np.zeros((360, 640, 3), dtype=np.uint8)
-                for pos in transformed_hand_positions:
-                    cv2.circle(calib_frame, (int(pos[0]), int(pos[1])), 10, (255, 0, 0), -1)
-
-                cv2.imshow("Calibrated Hand Positions", calib_frame)
 
         if show_live_transformed_calibrated_positions:
-            # Afficher la vidéo avec les positions des mains dessinées
-            cv2.imshow("Video Stream with Hand Positions", frame)
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+            # Dessiner les mains calibrées sur une nouvelle image
+            calib_frame = np.zeros((360, 640, 3), dtype=np.uint8)
+            for pos in transformed_hand_positions:
+                cv2.circle(calib_frame, (int(pos[0]), int(pos[1])), 10, (255, 0, 0), -1)
 
     cap.release()
     cv2.destroyAllWindows()
