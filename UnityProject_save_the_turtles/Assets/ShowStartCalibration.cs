@@ -3,10 +3,21 @@ using System.Collections;
 
 public class ShowStartCalibration : MonoBehaviour
 {
-    public GameObject calibrateOkObject; // Référence publique à l'objet CalibrateOk
+    public GameObject calibrateOkObject;
     public GameObject calibrateFailedObject;
+    public GameObject calibrationBall;
+    private Rigidbody calibrationBallRigidbody;
 
-    // Méthode publique pour démarrer l'affichage temporaire de CalibrateOk
+    void Start()
+    {
+        // Initialiser la variable d'instance calibrationBallRigidbody
+        calibrationBallRigidbody = calibrationBall.GetComponent<Rigidbody>();
+        if (calibrationBallRigidbody != null)
+        {
+            calibrationBallRigidbody.isKinematic = true; // Désactiver temporairement la physique
+        }
+    }
+
     public void StartCalibrateOkDisplay()
     {
         StartCoroutine(ShowCalibrateOkTemporarily());
@@ -24,6 +35,12 @@ public class ShowStartCalibration : MonoBehaviour
 
             // Désactiver l'objet CalibrateOk
             calibrateOkObject.SetActive(false);
+
+            // Réactiver la physique de la balle de calibration
+            if (calibrationBallRigidbody != null)
+            {
+                calibrationBallRigidbody.isKinematic = false;
+            }
         }
         else
         {

@@ -14,6 +14,7 @@ using System.Collections.Concurrent;
 public class CalibrationManager : MonoBehaviour
 {
     public GameObject wristPrefab;
+    public GameObject newWristPrefab;
     public GameObject planeGameObject;
     private GameObject[] wristInstances;
     private int maxHands = 2; // Nombre maximum de mains à gérer
@@ -149,5 +150,32 @@ public class CalibrationManager : MonoBehaviour
 
         return new Vector3(posX, 0.5f, posY); // Position ajustée sur le plan
     }
+
+    public void ChangeWristPrefab()
+        {
+            if (newWristPrefab != null)
+            {
+                wristPrefab = newWristPrefab;
+
+                // Ici, vous pouvez ajouter du code pour mettre à jour les instances existantes si nécessaire
+                // Par exemple, détruire les anciennes instances et en créer de nouvelles avec le nouveau prefab
+                foreach (var wristInstance in wristInstances)
+                {
+                    Destroy(wristInstance);
+                }
+
+                // Créer de nouvelles instances avec le nouveau prefab
+                for (int i = 0; i < maxHands; i++)
+                {
+                    wristInstances[i] = Instantiate(newWristPrefab, Vector3.zero, Quaternion.identity);
+                    wristRigidbodies[i] = wristInstances[i].GetComponent<Rigidbody>();
+                    wristInstances[i].SetActive(false);
+                }
+            }
+            else
+            {
+                Debug.LogError("New wrist prefab not assigned.");
+            }
+        }
 }
 

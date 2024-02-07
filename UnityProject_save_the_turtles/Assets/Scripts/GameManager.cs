@@ -58,8 +58,11 @@ public class GameManager : MonoBehaviour
              Debug.Log("Game Over!");
              Gameover = true;
              gameOverUI.SetActive(true);
+             if (CalibrationManager.Instance != null)
+             {
+                 CalibrationManager.Instance.ChangeWristPrefab();
+             }
              StartCoroutine(WaitAndLoadHomeScreen(30)); // rediriger vers la page d'accueil après 30 secondes
-             //Time.timeScale = 0;
          }
      }
 

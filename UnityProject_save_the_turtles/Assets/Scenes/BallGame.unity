@@ -1511,6 +1511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wristPrefab: {fileID: 4934855905958903879, guid: c2ccf2e1bd480354faa0501fdfd0703e, type: 3}
+  newWristPrefab: {fileID: 0}
   planeGameObject: {fileID: 1964773215}
   invertXAxis: 0
   slowLerpSpeed: 5
@@ -2409,7 +2410,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   calibrateOkObject: {fileID: 1167418257}
-  calibrateFailedObject: {fileID: 0}
+  calibrateFailedObject: {fileID: 369954551}
+  calibrationBall: {fileID: 544118868}
 --- !u!4 &1235660560
 Transform:
   m_ObjectHideFlags: 0
