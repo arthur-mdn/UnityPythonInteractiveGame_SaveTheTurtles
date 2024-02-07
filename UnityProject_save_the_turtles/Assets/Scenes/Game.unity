@@ -1141,7 +1141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3155f96050f4344a91db95868cfb22d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wristPrefab: {fileID: 4934855905958903879, guid: c2ccf2e1bd480354faa0501fdfd0703e, type: 3}
+  wristPrefab: {fileID: 4934855905958903879, guid: a587d2f951a57a44cbfa3d0b50da10a6, type: 3}
   planeGameObject: {fileID: 1851064394}
   invertXAxis: 0
   slowLerpSpeed: 5
@@ -1646,6 +1646,7 @@ Transform:
   - {fileID: 1208598303}
   - {fileID: 2114284097}
   - {fileID: 1073593615}
+  - {fileID: 2095509135}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1059936823
@@ -1825,7 +1826,7 @@ Transform:
   m_GameObject: {fileID: 1208598302}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.84, y: 1.96, z: 4.7}
+  m_LocalPosition: {x: -1.84, y: 1.96, z: 4.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3575,6 +3576,7 @@ MonoBehaviour:
   - {fileID: 1208598303}
   - {fileID: 2114284097}
   - {fileID: 1073593615}
+  - {fileID: 2095509135}
   spawnInterval: 10
   minimumSpawnInterval: 0.5
   spawnAcceleration: 0.5
@@ -4502,6 +4504,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressBar: {fileID: 1521239898}
   fillSpeed: 0.5
+--- !u!1 &2095509134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2095509135}
+  m_Layer: 0
+  m_Name: CrabeSpawnPoint4
+  m_TagString: CrabSpawnPoint
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2095509135
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095509134}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.31, y: 1.96, z: -3.21}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1033260729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2105566073 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7b5a9e0ec5d45fb4894651f21695314c, type: 3}
@@ -4532,7 +4565,7 @@ Transform:
   m_GameObject: {fileID: 2114284096}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.3, y: 1.96, z: 4.35}
+  m_LocalPosition: {x: 3.3, y: 1.96, z: 3.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

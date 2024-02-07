@@ -66,7 +66,7 @@ public class CalibrationManager : MonoBehaviour
         {
             UdpConnectionManager.Instance.SendData("start_calibration");
         }
-        StartCoroutine(DisableCalibrateStartAfterDelay(8f));
+        StartCoroutine(DisableCalibrateStartAfterDelay(5f));
     }
 
     IEnumerator DisableCalibrateStartAfterDelay(float delay)

@@ -12,6 +12,7 @@ TagManager:
   - GameOverScreen
   - TurtleSpawnPoint
   - CrabSpawnPoint
+  - Epuisette
   layers:
   - Default
   - TransparentFX
