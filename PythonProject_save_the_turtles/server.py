@@ -16,22 +16,16 @@ webcam_backend = cv2.CAP_DSHOW # cv2.CAP_DSHOW pour les webcams Windows, Utilise
 video_path = "Elements/wall_vid.mp4"
 show_calibrate_result = False
 show_live_transformed_calibrated_positions = True
-max_positions = 10  # Nombre maximal de positions à stocker
-left_hand_positions = []
-right_hand_positions = []
+alpha = 0.5  # Facteur de lissage, ajustez selon les besoins
+smoothed_left_hand = [0, 0]  # Initialiser avec une position de départ
+smoothed_right_hand = [0, 0]  # Initialiser avec une position de départ
 
-def add_position(hand_positions, new_position):
-    hand_positions.append(new_position)
-    if len(hand_positions) > max_positions:
-        hand_positions.pop(0)  # Retirer la position la plus ancienne
+def add_position(smoothed_position, new_position):
+    smoothed_position[0] = alpha * new_position[0] + (1 - alpha) * smoothed_position[0]
+    smoothed_position[1] = alpha * new_position[1] + (1 - alpha) * smoothed_position[1]
 
-def get_smoothed_position(hand_positions):
-    if hand_positions:
-        # Calculer la moyenne des positions stockées
-        x_avg = sum(pos[0] for pos in hand_positions) / len(hand_positions)
-        y_avg = sum(pos[1] for pos in hand_positions) / len(hand_positions)
-        return [x_avg, y_avg]
-    return None
+def get_smoothed_position(smoothed_position):
+    return smoothed_position
 
 def are_hands_in_air(keypoints, frame_height):
     if not keypoints[0]:
@@ -270,12 +264,9 @@ def capture_and_process_player_continuous():
                 left_hand = person[9]  # left_wrist
                 right_hand = person[10]  # right_wrist
                 if 0 < left_hand[0] < frame.shape[1] and 0 < left_hand[1] < frame.shape[0]:
-                    add_position(left_hand_positions, left_hand)
+                    add_position(smoothed_left_hand, left_hand)
                 if 0 < right_hand[0] < frame.shape[1] and 0 < right_hand[1] < frame.shape[0]:
-                    add_position(right_hand_positions, right_hand)
-
-        smoothed_left_hand = get_smoothed_position(left_hand_positions)
-        smoothed_right_hand = get_smoothed_position(right_hand_positions)
+                    add_position(smoothed_right_hand, right_hand)
 
         if smoothed_left_hand and smoothed_right_hand:
             smoothed_positions = [smoothed_left_hand, smoothed_right_hand]
