@@ -19,4 +19,12 @@ public class TurtleMovement : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 5);
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
+
+     private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wrist"))
+        {
+            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+        }
+    }
 }
