@@ -4014,7 +4014,7 @@ MonoBehaviour:
   - {fileID: 2114284097}
   - {fileID: 1073593615}
   - {fileID: 2095509135}
-  spawnInterval: 2
+  spawnInterval: 10
   minimumSpawnInterval: 0.5
   spawnAcceleration: 0.5
 --- !u!114 &1679015829

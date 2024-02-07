@@ -181,7 +181,7 @@ public class UdpConnectionManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("ShowStartCalibration script non trouvé dans la scène.");
+            Debug.Log("ShowStartCalibration script non trouvé dans la scène.");
         }
     }
     void ShowCalibrateFailedTemporarily()
@@ -194,7 +194,7 @@ public class UdpConnectionManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("ShowStartCalibration script non trouvé dans la scène.");
+            Debug.Log("ShowStartCalibration script non trouvé dans la scène.");
         }
     }
 }
