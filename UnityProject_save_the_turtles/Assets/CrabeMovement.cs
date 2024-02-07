@@ -97,6 +97,7 @@ public class CrabeMovement : MonoBehaviour
             }else{
                 Debug.Log("Crabe mort mais pas d'animator");
             }
+            GameManager.Instance.AddCrabKilled();
             Destroy(gameObject);
         }
     }

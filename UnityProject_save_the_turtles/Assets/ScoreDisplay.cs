@@ -9,7 +9,7 @@ public class ScoreDisplay : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            scoreText.text = "Score: " + GameManager.Instance.GetScore();
+            scoreText.text = "" + GameManager.Instance.GetScore();
         }
     }
 }

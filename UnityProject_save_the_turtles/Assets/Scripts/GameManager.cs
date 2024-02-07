@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public int Score { get; private set; } = 0;
+    public int CrabsKilled { get; private set; } = 0;
     public int Lives { get; private set; } = 5;
     public bool Gameover { get; private set; } = false;
     public GameObject gameOverUI;
@@ -42,6 +43,12 @@ public class GameManager : MonoBehaviour
     public int GetScore()
     {
         return Score;
+    }
+
+    public void AddCrabKilled()
+    {
+        CrabsKilled++;
+        Debug.Log("Crabs Killed: " + CrabsKilled);
     }
 
      private void CheckGameOver()
