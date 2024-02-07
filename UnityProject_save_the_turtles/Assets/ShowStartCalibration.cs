@@ -51,25 +51,11 @@ public class ShowStartCalibration : MonoBehaviour
     // Méthode publique pour démarrer l'affichage temporaire de CalibrateOk
     public void StartCalibrateFailedDisplay()
     {
-        StartCoroutine(ShowCalibrateFailedTemporarily());
-    }
-
-    IEnumerator ShowCalibrateFailedTemporarily()
-    {
         if (calibrateFailedObject != null)
         {
-            // Activer l'objet CalibrateOk
+            // Activer l'objet CalibrateFailed
             calibrateFailedObject.SetActive(true);
-
-            // Attendre pendant un certain délai
-            yield return new WaitForSeconds(5f);
-
-            // Désactiver l'objet CalibrateOk
-            calibrateFailedObject.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("L'objet calibrateFailedObject n'est pas assigné dans l'inspecteur.");
         }
     }
+
 }
