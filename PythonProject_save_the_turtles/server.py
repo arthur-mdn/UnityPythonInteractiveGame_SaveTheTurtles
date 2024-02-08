@@ -60,7 +60,7 @@ def start_yolo_hands_detection(to_launch_new_game=False):
         else:
             hands_in_air_counter = 0
 
-        if hands_in_air_counter >= 10:
+        if hands_in_air_counter >= 15:
             print("Mains en l'air détectées")
             if to_launch_new_game:
                 message = {
