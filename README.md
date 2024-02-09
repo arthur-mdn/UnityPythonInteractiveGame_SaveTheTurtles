@@ -46,11 +46,12 @@ python server.py
 
 ## Utilisation
 ### Unity
-Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`** 
-Ouvrez la scène `StartScreen` pour démarrer.
-Lancez la scène avec le bouton play.
+- Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`** 
+- Ouvrez la scène `StartScreen` pour démarrer.
 
 ## Fonctionnement sur Unity
+Lancez la scène avec le bouton play ▶️.
+
 Au premier lancement, il va falloir "lever les mains en l'air" pour lancer une calibration.
 Écartez-vous du champ de vision de la caméra pour lancer la calibration.
 Une fois la calibration terminée, la scène de jeu se lance automatiquement.
