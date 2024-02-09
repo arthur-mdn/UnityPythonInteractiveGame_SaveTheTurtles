@@ -55,13 +55,18 @@ Une fois la calibration terminée, la scène de jeu se lance automatiquement.
 
 ## Problèmes connus
 ### Scène vide après le lancement du build Unity.
-- Assurez-vous que l'écran sur lequel est projeté le jeu a la résolution 1920x1080.
+> ⚠️ Assurez-vous que l'écran sur lequel est projeté le jeu est configuré avec la résolution 1920x1080.
 ### Écran noir après le lancement du build Unity.
-- Assurez-vous que le serveur Python est bien lancé.
-- Assurez-vous également qu'aucun autre programme n'utilise la webcam.
-- Assurez-vous également qu'aucun autre programme n'utilise les ports d'écoutes (3000 et 3001). 
+> ⚠️ Assurez-vous que le serveur Python est bien lancé.
+
+> ⚠️ Assurez-vous qu'aucun autre programme n'utilise la webcam.
+
+> ⚠️ Assurez-vous qu'aucun autre programme n'utilise les ports d'écoutes (3000 et 3001). 
+>
 ### Impossible d'utiliser la webcam sur MacOS
-Modifiez la ligne suivante dans ``server.py``
+> ⚠️ Assurez-vous de configurer la backend de la caméra dans le fichier `server.py` pour utiliser `CAP_ANY` au lieu de `CAP_DSHOW`.
+
+Vous devez modifier la ligne suivante dans ``server.py``
 ```python
 webcam_backend = cv2.CAP_DSHOW
 ```
