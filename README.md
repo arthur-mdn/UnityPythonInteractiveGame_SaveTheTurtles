@@ -6,7 +6,7 @@
 - Jeu interactif où le joueur doit sauver les tortues en les protégeant des crabes et en les guidant vers la mer.
 - La détection des mains en temps réel est utilisée pour déplacer une épuisette virtuelle pour attraper les crabes et les empêcher d'attaquer les tortues.
 
-![Démonstration](https://github.com/arthur-mdn/DemoFiles/demo.gif)
+![Démonstration](https://github.com/arthur-mdn/UnityPythonInteractiveGame_SaveTheTurtles/blob/main/DemoFiles/demo.gif)
 
 # Prérequis
 - [Python 3.11](https://www.python.org/downloads/release/python-3110/)
