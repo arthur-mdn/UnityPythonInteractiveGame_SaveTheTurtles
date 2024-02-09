@@ -48,15 +48,25 @@ Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`**
 Ouvrez la scène `StartScreen` pour démarrer.
 Lancez la scène avec le bouton play.
 
-## Fonctionnement
+## Fonctionnement sur Unity
 Au premier lancement, il va falloir "lever les mains en l'air" pour lancer une calibration.
 Écartez-vous du champ de vision de la caméra pour lancer la calibration.
 Une fois la calibration terminée, la scène de jeu se lance automatiquement.
 
+## Fonctionnement sur un build du jeu
+- Lancez un build du jeu en utilisant le menu Unity `File > Build`.
+- Fermez le moteur Unity après le build.
+- Lancez le serveur Python.
+- Lancez le jeu en utilisant le fichier `.exe` généré.
+- Déplacez la fenêtre de jeu sur un écran ayant la résolution 1920x1080 (important).
+
 ## Problèmes connus
 ### Scène vide après le lancement du build Unity.
 > ⚠️ Assurez-vous que l'écran sur lequel est projeté le jeu est configuré avec la résolution 1920x1080.
+> 
 ### Écran noir après le lancement du build Unity.
+> ⚠️ Assurez-vous que le moteur Unity est FERMÉ lors du build.
+
 > ⚠️ Assurez-vous que le serveur Python est bien lancé.
 
 > ⚠️ Assurez-vous qu'aucun autre programme n'utilise la webcam.
