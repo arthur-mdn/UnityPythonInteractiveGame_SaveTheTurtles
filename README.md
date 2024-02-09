@@ -18,6 +18,7 @@ Se rendre dans le dossier contenant le projet Python
 ```bash
 cd PythonProject_save_the_turtles
 ```
+### Créer un environnement virtuel Python
 - #### Si vous avez une variable d'environnement "python311"
     ```bash
     python311 -m venv saveTurtles 
@@ -27,11 +28,11 @@ cd PythonProject_save_the_turtles
     ```bash
     Z:\chemin\complet\vers\l\installation\Python\Python311\python.exe -m venv saveTurtles
     ```
-Une fois l'environnement Python créé, on l'active
+### Activer l'environnement virtuel
 ```bash
 .\saveTurtles\Scripts\activate
 ```
-Puis on lance l'installation des paquets
+### Installer les dépendances
 ```bash
 pip install -r .\requirements.txt
 ```
