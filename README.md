@@ -23,6 +23,7 @@ cd PythonProject_save_the_turtles
     python311 -m venv saveTurtles 
     ```
 - #### Si vous n'avez pas de variable d'environnement "python311"
+  Vous devez spécifier le chemin complet vers l'installation de Python 3.11
     ```bash
     Z:\chemin\complet\vers\l\installation\Python\Python311\python.exe -m venv saveTurtles
     ```
