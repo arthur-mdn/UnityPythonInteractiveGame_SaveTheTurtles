@@ -55,7 +55,7 @@ Une fois la calibration terminée, la scène de jeu se lance automatiquement.
 
 ## Fonctionnement sur un build du jeu
 - Créez un build du jeu en utilisant le menu Unity `File > Build`.
-- Fermez le moteur Unity après le build.
+- Fermez le moteur Unity après le build (important pour ne pas interférer la connexion entre le serveur et le build).
 - Lancez le serveur Python.
 - Lancez le jeu en utilisant le fichier `.exe` généré.
 - Déplacez la fenêtre de jeu sur un écran ayant la résolution 1920x1080 (important).
