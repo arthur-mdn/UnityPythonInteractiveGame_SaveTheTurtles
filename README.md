@@ -54,7 +54,7 @@ Au premier lancement, il va falloir "lever les mains en l'air" pour lancer une c
 Une fois la calibration terminée, la scène de jeu se lance automatiquement.
 
 ## Fonctionnement sur un build du jeu
-- Lancez un build du jeu en utilisant le menu Unity `File > Build`.
+- Créez un build du jeu en utilisant le menu Unity `File > Build`.
 - Fermez le moteur Unity après le build.
 - Lancez le serveur Python.
 - Lancez le jeu en utilisant le fichier `.exe` généré.
