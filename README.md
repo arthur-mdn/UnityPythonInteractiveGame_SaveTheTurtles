@@ -92,3 +92,6 @@ Par la ligne suivante
 ```python
 webcam_backend = cv2.CAP_ANY
 ```
+
+## Crédits
+Voir [Crédits](https://github.com/arthur-mdn/UnityPythonInteractiveGame_SaveTheTurtles/blob/main/CREDITS.md)
