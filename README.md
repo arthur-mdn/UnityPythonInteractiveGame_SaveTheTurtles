@@ -1,7 +1,10 @@
 ﻿# UnityPythonInteractiveGame_SaveTheTurtles
 
 ## Introduction
-Ce projet consite à relier la bibliothèque Python3 `Ultralytics YoloV8` utilisée pour détecter un joueur sur une source vidéo et en extraire les positions des mains. Puis communiquer avec Unity pour créer un jeu interactif en utilisant les données détectées.
+> Ce projet consiste à relier la bibliothèque Python3 `Ultralytics YoloV8` utilisée pour détecter un joueur sur une source vidéo et en extraire les positions des mains. Puis communiquer avec Unity pour créer un jeu interactif en utilisant les données détectées.
+
+- Jeu interactif où le joueur doit sauver les tortues en les protégeant des crabes et en les guidant vers la mer.
+- La détection des mains en temps réel est utilisée pour déplacer une épuisette virtuelle pour attraper les crabes et les empêcher d'attaquer les tortues.
 
 # Prérequis
 - [Python 3.11](https://www.python.org/downloads/release/python-3110/)
@@ -47,7 +50,7 @@ python server.py
 ## Utilisation
 ### Unity
 - Ouvrez le projet `/UnityProject_save_the_turtles` avec **Unity `2022.3.10f1`** 
-- Ouvrez la scène `StartScreen` pour démarrer.
+- Ouvrez la scène `StartScreen`.
 
 ## Fonctionnement sur Unity
 Lancez la scène avec le bouton play ▶️.
