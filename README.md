@@ -61,11 +61,11 @@ Une fois la calibration terminée, la scène de jeu se lance automatiquement.
 - Assurez-vous également qu'aucun autre programme n'utilise la webcam.
 - Assurez-vous également qu'aucun autre programme n'utilise les ports d'écoutes (3000 et 3001). 
 ### Impossible d'utiliser la webcam sur MacOS
-- Modifiez la ligne suivante dans ``server.py``
+Modifiez la ligne suivante dans ``server.py``
 ```python
 webcam_backend = cv2.CAP_DSHOW
 ```
-par :
+Par la ligne suivante
 ```python
 webcam_backend = cv2.CAP_ANY
 ```
