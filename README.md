@@ -9,8 +9,10 @@
 ![Demonstration](https://github.com/arthur-mdn/UnityPythonInteractiveGame_SaveTheTurtles/blob/main/DemoFiles/demo.gif)
 
 # Vidéos associées.
-[![Démonstration du jeu Save The Turtles - Jeu interactif et innovant ! Unity + Python (Yolo V8)](https://img.youtube.com/vi/K8k6RFVC_Io/0.jpg)](https://www.youtube.com/watch?v=K8k6RFVC_Io)
-[![Présentation et coulisses du jeu interactif innovant Save The Turtles](https://img.youtube.com/vi/G4kqt2PyODY/0.jpg)](https://www.youtube.com/watch?v=G4kqt2PyODY)
+- #### [Démonstration du jeu Save The Turtles - Jeu interactif et innovant ! Unity + Python (Yolo V8)](https://www.youtube.com/watch?v=K8k6RFVC_Io)
+  [![Démonstration du jeu Save The Turtles - Jeu interactif et innovant ! Unity + Python (Yolo V8)](https://img.youtube.com/vi/K8k6RFVC_Io/0.jpg)](https://www.youtube.com/watch?v=K8k6RFVC_Io)
+- #### [Présentation et coulisses du jeu interactif innovant Save The Turtles](https://www.youtube.com/watch?v=G4kqt2PyODY)
+  [![Présentation et coulisses du jeu interactif innovant Save The Turtles](https://img.youtube.com/vi/G4kqt2PyODY/0.jpg)](https://www.youtube.com/watch?v=G4kqt2PyODY)
 
 # Prérequis
 - [Python 3.11](https://www.python.org/downloads/release/python-3110/)
