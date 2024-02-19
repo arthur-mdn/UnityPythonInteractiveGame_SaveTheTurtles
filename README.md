@@ -6,7 +6,12 @@
 - Jeu interactif où le joueur doit sauver les tortues en les protégeant des crabes et en les guidant vers la mer.
 - La détection des mains en temps réel est utilisée pour déplacer une épuisette virtuelle pour attraper les crabes et les empêcher d'attaquer les tortues.
 
-![Démonstration](https://github.com/arthur-mdn/UnityPythonInteractiveGame_SaveTheTurtles/blob/main/DemoFiles/demo.gif)
+![Demonstration](https://github.com/arthur-mdn/UnityPythonInteractiveGame_SaveTheTurtles/blob/main/DemoFiles/demo.gif)
+
+# Vidéos associées.
+- <iframe width="560" height="315" src="https://www.youtube.com/embed/K8k6RFVC_Io" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+- [![Démonstration du jeu Save The Turtles - Jeu interactif et innovant ! Unity + Python (Yolo V8)](https://img.youtube.com/vi/K8k6RFVC_Io/0.jpg)](https://www.youtube.com/watch?v=K8k6RFVC_Io)
+- [![Présentation et coulisses du jeu interactif innovant Save The Turtles](https://img.youtube.com/vi/G4kqt2PyODY/0.jpg)](https://www.youtube.com/watch?v=G4kqt2PyODY)
 
 # Prérequis
 - [Python 3.11](https://www.python.org/downloads/release/python-3110/)
